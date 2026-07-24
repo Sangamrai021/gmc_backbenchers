@@ -41,7 +41,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
 
+Route::middleware(['auth', 'role:super_admin'])->group(function () {
     Route::get('/admin/users', [UserController::class, 'index'])->name('admin.users');
     Route::get('/admin/useractivity', [\App\Http\Controllers\Admin\UserActivityController::class, 'index'])->name('admin.useractivity');
     Route::get('/admin/institutions', [\App\Http\Controllers\Admin\InstitutionController::class, 'index'])->name('admin.institutions');
@@ -57,6 +59,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         $semesterIds = $user->enrolledSemesters()->pluck('semesters.id');
         $subjectIds = \App\Models\Subject::whereIn('semester_id', $semesterIds)->pluck('id');
+        $stats = [];
         $stats['subjects'] = count($subjectIds);
         $stats['questions'] = \App\Models\Discussion::where('discussionable_type', 'subject')
             ->whereIn('discussionable_id', $subjectIds)->where('user_id', $user->id)->count();
@@ -76,9 +79,9 @@ Route::middleware('auth')->prefix('questions')->name('questions.')->group(functi
     Route::delete('/{discussion}', [DiscussionController::class, 'destroy'])->name('destroy');
 
     Route::post('/{discussion}/answers', [DiscussionAnswerController::class, 'store'])->name('answers.store');
-    Route::put('/answers/{discussion_answer}', [DiscussionAnswerController::class, 'update'])->name('answers.update');
-    Route::delete('/answers/{discussion_answer}', [DiscussionAnswerController::class, 'destroy'])->name('answers.destroy');
-    Route::post('/answers/{discussion_answer}/accept', [DiscussionAnswerController::class, 'accept'])->name('answers.accept');
+    Route::put('/answers/{answer}', [DiscussionAnswerController::class, 'update'])->name('answers.update');
+    Route::delete('/answers/{answer}', [DiscussionAnswerController::class, 'destroy'])->name('answers.destroy');
+    Route::post('/answers/{answer}/accept', [DiscussionAnswerController::class, 'accept'])->name('answers.accept');
 
     Route::post('/vote', [VoteController::class, 'toggle'])->middleware('throttle:60,1')->name('vote');
 });
