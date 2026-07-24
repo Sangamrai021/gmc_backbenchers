@@ -84,68 +84,51 @@ export default function AuthenticatedLayout({ header, children }) {
 
     if (user?.role === 'student') {
         return (
-            <div className="min-h-screen bg-gray-100 flex font-sans">
+            <div className="bg-background text-on-background font-body-md overflow-hidden flex h-screen">
                 <StudentSidebar />
-                <div className="flex-1 flex flex-col min-w-0">
-                    <nav className="border-b border-gray-200 bg-white sticky top-0 z-20">
-                        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                            <div className="flex h-16 justify-between items-center">
-                                <div className="flex items-center gap-2">
-                                    <span className="px-2.5 py-1 rounded-md bg-indigo-100 text-indigo-800 text-xs font-bold uppercase tracking-wider">
-                                        Student Portal
-                                    </span>
-                                </div>
-
-                                <div className="flex items-center">
+                <div className="flex-1 ml-72 h-screen overflow-y-auto scroll-smooth">
+                    <header className="sticky top-0 z-40 bg-background flex justify-between items-center px-margin-desktop py-6 max-w-container-max mx-auto">
+                        <div>
+                            {typeof header === 'string' ? (
+                                <h2 className="font-headline-md text-headline-md text-primary font-bold">{header}</h2>
+                            ) : (
+                                header || <h2 className="font-headline-md text-headline-md text-primary font-bold">LMS Dashboard</h2>
+                            )}
+                        </div>
+                        <div className="flex items-center gap-6">
+                            <div className="relative hidden lg:block w-80">
+                                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+                                <input className="w-full pl-10 pr-4 py-2 bg-white border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent text-body-md" placeholder="Search courses, notes..." type="text" />
+                            </div>
+                            <div className="flex items-center gap-4">
+                                <button className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors text-on-surface-variant">
+                                    <span className="material-symbols-outlined">notifications</span>
+                                </button>
+                                <div className="flex items-center gap-3 pl-4 border-l border-outline-variant">
                                     <Dropdown>
                                         <Dropdown.Trigger>
-                                            <button
-                                                type="button"
-                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none"
-                                            >
-                                                {user.name}
-                                                <svg
-                                                    className="-me-0.5 ms-2 h-4 w-4"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                        clipRule="evenodd"
-                                                    />
-                                                </svg>
+                                            <button className="flex items-center gap-3 focus:outline-none">
+                                                <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white ring-2 ring-primary uppercase font-bold text-lg">
+                                                    {user.name.charAt(0)}
+                                                </div>
+                                                <div className="hidden sm:block text-left">
+                                                    <p className="font-label-md text-label-md text-on-surface leading-tight">{user.name}</p>
+                                                    <p className="text-label-sm text-outline leading-tight">Student</p>
+                                                </div>
                                             </button>
                                         </Dropdown.Trigger>
-
                                         <Dropdown.Content align="right">
-                                            <Dropdown.Link href={route('profile.edit')}>
-                                                Profile
-                                            </Dropdown.Link>
-                                            <Dropdown.Link
-                                                href={route('logout')}
-                                                method="post"
-                                                as="button"
-                                            >
-                                                Log Out
-                                            </Dropdown.Link>
+                                            <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
+                                            <Dropdown.Link href={route('logout')} method="post" as="button">Log Out</Dropdown.Link>
                                         </Dropdown.Content>
                                     </Dropdown>
                                 </div>
                             </div>
                         </div>
-                    </nav>
-
-                    {header && (
-                        <header className="bg-white shadow-sm border-b border-gray-200">
-                            <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                                {header}
-                            </div>
-                        </header>
-                    )}
-
-                    <main className="flex-1 p-4 sm:p-6 lg:p-8">{children}</main>
+                    </header>
+                    <main className="px-margin-desktop pb-20 max-w-container-max mx-auto">
+                        {children}
+                    </main>
                 </div>
             </div>
         );
