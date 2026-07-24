@@ -32,12 +32,7 @@ Route::get('/dashboard', function () {
             ->whereIn('discussionable_id', $subjectIds)->count();
         $stats['answers'] = \App\Models\DiscussionAnswer::whereIn('user_id', [$user->id])->count();
     } elseif ($user->isStudent()) {
-        $semesterIds = $user->enrolledSemesters()->pluck('semesters.id');
-        $subjectIds = \App\Models\Subject::whereIn('semester_id', $semesterIds)->pluck('id');
-        $stats['subjects'] = count($subjectIds);
-        $stats['questions'] = \App\Models\Discussion::where('discussionable_type', 'subject')
-            ->whereIn('discussionable_id', $subjectIds)->where('user_id', $user->id)->count();
-        $stats['answers'] = \App\Models\DiscussionAnswer::where('user_id', $user->id)->count();
+        return redirect()->route('student.dashboard');
     } elseif ($user->isInstitutionAdmin()) {
         $institutionIds = $user->institutions()->pluck('institutions.id');
         $semesterIds = \App\Models\Semester::whereIn('institution_id', $institutionIds)->pluck('id');
@@ -67,6 +62,24 @@ Route::middleware('auth')->group(function () {
     Route::get('/admin/useractivity', [\App\Http\Controllers\Admin\UserActivityController::class, 'index'])->name('admin.useractivity');
     Route::get('/admin/institutions', [\App\Http\Controllers\Admin\InstitutionController::class, 'index'])->name('admin.institutions');
     Route::post('/admin/institutions', [\App\Http\Controllers\Admin\InstitutionController::class, 'store'])->name('admin.institutions.store');
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/student/dashboard', function () {
+        $user = Auth::user();
+        if (!$user->isStudent()) {
+            return redirect()->route('dashboard');
+        }
+
+        $semesterIds = $user->enrolledSemesters()->pluck('semesters.id');
+        $subjectIds = \App\Models\Subject::whereIn('semester_id', $semesterIds)->pluck('id');
+        $stats['subjects'] = count($subjectIds);
+        $stats['questions'] = \App\Models\Discussion::where('discussionable_type', 'subject')
+            ->whereIn('discussionable_id', $subjectIds)->where('user_id', $user->id)->count();
+        $stats['answers'] = \App\Models\DiscussionAnswer::where('user_id', $user->id)->count();
+
+        return Inertia::render('Student/Dashboard', ['stats' => $stats]);
+    })->name('student.dashboard');
 });
 
 Route::middleware('auth')->prefix('questions')->name('questions.')->group(function () {
