@@ -38,7 +38,9 @@ class RegisteredUserController extends Controller
             'anonymous_name' => AnonymousNameGenerator::generate(),
         ]);
 
-        $user->assignRole('student');
+        if (\Spatie\Permission\Models\Role::where('name', 'student')->exists()) {
+            $user->assignRole('student');
+        }
 
         event(new Registered($user));
 
