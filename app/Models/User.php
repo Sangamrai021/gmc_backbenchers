@@ -69,6 +69,11 @@ class User extends Authenticatable
         return $this->hasMany(Vote::class);
     }
 
+    public function assignments(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Assignment::class, 'teacher_id');
+    }
+
     public function submissions(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Submission::class, 'student_id');

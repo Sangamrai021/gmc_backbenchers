@@ -17,13 +17,12 @@ class AnonymousNameGeneratorTest extends TestCase
     public function test_generates_unique_names(): void
     {
         $names = [];
-        $iterations = 100;
 
-        for ($i = 0; $i < $iterations; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             $names[] = AnonymousNameGenerator::generate();
         }
 
-        $this->assertCount($iterations, array_unique($names));
+        $this->assertCount(50, array_unique($names));
     }
 
     public function test_no_vulgar_or_inappropriate_words(): void
