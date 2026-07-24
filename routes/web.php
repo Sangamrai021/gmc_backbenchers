@@ -3,7 +3,9 @@
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\DiscussionAnswerController;
 use App\Http\Controllers\DiscussionController;
+use App\Http\Controllers\MentorSessionController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StudentProjectController;
 use App\Http\Controllers\VoteController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
@@ -45,7 +47,7 @@ Route::get('/dashboard', function () {
             ->whereIn('discussionable_id', $subjectIds)->count();
         $stats['answers'] = \App\Models\DiscussionAnswer::whereHas('discussion', function ($q) use ($subjectIds) {
             $q->where('discussionable_type', 'subject')
-              ->whereIn('discussionable_id', $subjectIds);
+                ->whereIn('discussionable_id', $subjectIds);
         })->count();
     } else {
         $stats['subjects'] = \App\Models\Subject::count();
@@ -82,6 +84,16 @@ Route::middleware('auth')->prefix('questions')->name('questions.')->group(functi
     Route::post('/answers/{discussion_answer}/accept', [DiscussionAnswerController::class, 'accept'])->name('answers.accept');
 
     Route::post('/vote', [VoteController::class, 'toggle'])->name('vote');
+
+    Route::middleware(['auth', 'verified'])->group(function () {
+        Route::get('/talent-showcase', [StudentProjectController::class, 'index'])->name('projects.index');
+        Route::post('/talent-showcase', [StudentProjectController::class, 'store'])->name('projects.store');
+        Route::middleware(['auth', 'verified'])->group(function () {
+            Route::get('/mentor-board', [MentorSessionController::class, 'index'])->name('mentorship.index');
+            Route::post('/mentor-sessions/{mentorSession}/accept', [MentorSessionController::class, 'accept'])->name('mentorship.accept');
+            Route::post('/mentor-sessions/{mentorSession}/complete', [MentorSessionController::class, 'complete'])->name('mentorship.complete');
+        });
+    });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
