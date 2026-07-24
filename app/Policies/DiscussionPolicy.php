@@ -36,6 +36,10 @@ class DiscussionPolicy
 
         $discussionable = $discussion->discussionable;
 
+        if ($discussion->discussionable_type === null || $discussion->discussionable_type === 'general') {
+            return true;
+        }
+
         if ($discussionable instanceof Subject) {
             return $this->canViewSubject($user, $discussionable);
         }

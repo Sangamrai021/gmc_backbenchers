@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::create('student_projects', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete(); // The Student
-            $table->foreignId('institution_id')->constrained()->cascadeOnDelete(); // For multi-tenant isolation
+            $table->foreignId('user_id')->constrained()->restrictOnDelete(); // The Student
+            $table->foreignId('institution_id')->constrained()->restrictOnDelete(); // For multi-tenant isolation
             $table->string('title');
             $table->text('description');
             $table->string('tech_stack'); // e.g., "Laravel, React, Python"

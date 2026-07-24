@@ -33,37 +33,9 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    $user = Auth::user();
-    $stats = ['questions' => 0, 'answers' => 0, 'subjects' => 0];
-
-    if ($user->isTeacher()) {
-        $subjectIds = $user->taughtSubjects()->pluck('subjects.id');
-        $stats['subjects'] = count($subjectIds);
-        $stats['questions'] = \App\Models\Discussion::where('discussionable_type', 'subject')
-            ->whereIn('discussionable_id', $subjectIds)->count();
-        $stats['answers'] = \App\Models\DiscussionAnswer::whereIn('user_id', [$user->id])->count();
-    } elseif ($user->isStudent()) {
-        return redirect()->route('student.dashboard');
-    } elseif ($user->isInstitutionAdmin()) {
-        $institutionIds = $user->institutions()->pluck('institutions.id');
-        $semesterIds = \App\Models\Semester::whereIn('institution_id', $institutionIds)->pluck('id');
-        $subjectIds = \App\Models\Subject::whereIn('semester_id', $semesterIds)->pluck('id');
-        $stats['subjects'] = count($subjectIds);
-        $stats['questions'] = \App\Models\Discussion::where('discussionable_type', 'subject')
-            ->whereIn('discussionable_id', $subjectIds)->count();
-        $stats['answers'] = \App\Models\DiscussionAnswer::whereHas('discussion', function ($q) use ($subjectIds) {
-            $q->where('discussionable_type', 'subject')
-                ->whereIn('discussionable_id', $subjectIds);
-        })->count();
-    } else {
-        $stats['subjects'] = \App\Models\Subject::count();
-        $stats['questions'] = \App\Models\Discussion::count();
-        $stats['answers'] = \App\Models\DiscussionAnswer::count();
-    }
-
-    return Inertia::render('Dashboard', ['stats' => $stats]);
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -108,17 +80,16 @@ Route::middleware('auth')->prefix('questions')->name('questions.')->group(functi
     Route::delete('/answers/{discussion_answer}', [DiscussionAnswerController::class, 'destroy'])->name('answers.destroy');
     Route::post('/answers/{discussion_answer}/accept', [DiscussionAnswerController::class, 'accept'])->name('answers.accept');
 
-    Route::post('/vote', [VoteController::class, 'toggle'])->name('vote');
+    Route::post('/vote', [VoteController::class, 'toggle'])->middleware('throttle:60,1')->name('vote');
+});
 
-    Route::middleware(['auth', 'verified'])->group(function () {
-        Route::get('/talent-showcase', [StudentProjectController::class, 'index'])->name('projects.index');
-        Route::post('/talent-showcase', [StudentProjectController::class, 'store'])->name('projects.store');
-        Route::middleware(['auth', 'verified'])->group(function () {
-            Route::get('/mentor-board', [MentorSessionController::class, 'index'])->name('mentorship.index');
-            Route::post('/mentor-sessions/{mentorSession}/accept', [MentorSessionController::class, 'accept'])->name('mentorship.accept');
-            Route::post('/mentor-sessions/{mentorSession}/complete', [MentorSessionController::class, 'complete'])->name('mentorship.complete');
-        });
-    });
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/talent-showcase', [StudentProjectController::class, 'index'])->name('projects.index');
+    Route::post('/talent-showcase', [StudentProjectController::class, 'store'])->name('projects.store');
+    
+    Route::get('/mentor-board', [MentorSessionController::class, 'index'])->name('mentorship.index');
+    Route::post('/mentor-sessions/{mentorSession}/accept', [MentorSessionController::class, 'accept'])->name('mentorship.accept');
+    Route::post('/mentor-sessions/{mentorSession}/complete', [MentorSessionController::class, 'complete'])->name('mentorship.complete');
 });
 
 Route::middleware('auth')->prefix('assignments')->name('assignments.')->group(function () {
@@ -137,8 +108,8 @@ Route::middleware('auth')->prefix('assignments')->name('assignments.')->group(fu
     Route::post('/{assignment}/submissions', [SubmissionController::class, 'store'])->name('submissions.store');
 });
 
-Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', [InstitutionAdminController::class, 'index'])->name('dashboard');
+Route::middleware(['auth', 'role:super_admin|institution_admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [InstitutionAdminController::class, 'dashboard'])->name('dashboard');
     
     Route::resource('semesters', SemesterController::class)->except(['show']);
     Route::resource('subjects', SubjectController::class)->except(['show']);

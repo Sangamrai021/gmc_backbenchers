@@ -10,8 +10,8 @@ return new class extends Migration
     {
         Schema::create('submissions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('assignment_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('student_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('assignment_id')->constrained()->restrictOnDelete();
+            $table->foreignId('student_id')->constrained('users')->restrictOnDelete();
             $table->text('content')->nullable();
             $table->string('file_url')->nullable();
             $table->timestamp('submitted_at')->useCurrent();

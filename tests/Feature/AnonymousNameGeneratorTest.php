@@ -2,11 +2,13 @@
 
 namespace Tests\Feature;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Services\AnonymousNameGenerator;
 use Tests\TestCase;
 
 class AnonymousNameGeneratorTest extends TestCase
 {
+    use RefreshDatabase;
     public function test_generates_valid_format(): void
     {
         $name = AnonymousNameGenerator::generate();

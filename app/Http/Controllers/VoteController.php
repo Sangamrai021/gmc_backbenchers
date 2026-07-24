@@ -31,11 +31,15 @@ class VoteController extends Controller
             'votable_id' => $validated['votable_id'],
         ])->first();
 
+        $logAction = null;
+
         if ($existingVote) {
             if ($existingVote->type === $validated['type']) {
                 $existingVote->delete();
+                $logAction = null; // Don't log un-votes
             } else {
                 $existingVote->update(['type' => $validated['type']]);
+                $logAction = 'voted_' . $validated['type'];
             }
         } else {
             Vote::create([
@@ -44,15 +48,18 @@ class VoteController extends Controller
                 'votable_id' => $validated['votable_id'],
                 'type' => $validated['type'],
             ]);
+            $logAction = 'voted_' . $validated['type'];
         }
 
-        StudentActivityLog::create([
-            'student_id' => Auth::id(),
-            'subject_id' => null,
-            'action' => 'voted_' . $validated['type'],
-            'loggable_id' => $validated['votable_id'],
-            'loggable_type' => $modelClass,
-        ]);
+        if ($logAction) {
+            StudentActivityLog::create([
+                'student_id' => Auth::id(),
+                'subject_id' => null,
+                'action' => $logAction,
+                'loggable_id' => $validated['votable_id'],
+                'loggable_type' => $modelClass,
+            ]);
+        }
 
         return redirect()->back();
     }

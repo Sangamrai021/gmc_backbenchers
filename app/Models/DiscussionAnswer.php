@@ -27,6 +27,7 @@ class DiscussionAnswer extends Model
     }
 
     protected $appends = ['author_name'];
+    protected $with = ['user'];
 
     public function discussion(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {

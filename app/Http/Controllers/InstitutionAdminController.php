@@ -29,6 +29,11 @@ class InstitutionAdminController extends Controller
         if ($user->isInstitutionAdmin()) {
             $institutionIds = $user->institutions()->pluck('institutions.id');
             $institution = Institution::find($institutionIds->first());
+
+            if (!$institution) {
+                abort(403, 'You are not associated with any institution.');
+            }
+
             $semesterIds = Semester::whereIn('institution_id', $institutionIds)->pluck('id');
 
             $stats = [

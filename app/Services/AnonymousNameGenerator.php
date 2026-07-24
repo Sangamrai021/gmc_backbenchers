@@ -22,11 +22,20 @@ class AnonymousNameGenerator
 
     public static function generate(): string
     {
+        $attempts = 0;
+        $maxAttempts = 50;
+
         do {
             $adjective = self::$adjectives[array_rand(self::$adjectives)];
             $animal = self::$animals[array_rand(self::$animals)];
             $number = str_pad(random_int(1, 99), 2, '0', STR_PAD_LEFT);
             $name = $adjective . $animal . $number;
+            $attempts++;
+            
+            if ($attempts >= $maxAttempts) {
+                $name .= '-' . substr(uniqid(), -4);
+                break;
+            }
         } while (\App\Models\User::where('anonymous_name', $name)->exists());
 
         return $name;

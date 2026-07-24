@@ -74,6 +74,10 @@ class EnrollmentController extends Controller
         $user = Auth::user();
 
         if (!$user->isSuperAdmin()) {
+            if (!$user->isInstitutionAdmin()) {
+                abort(403);
+            }
+
             $belongsToInstitution = $user->institutions()
                 ->where('institutions.id', $semester->institution_id)
                 ->exists();

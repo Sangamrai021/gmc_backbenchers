@@ -101,6 +101,7 @@ class DiscussionTest extends TestCase
     {
         $response = $this->actingAs($this->teacherJava)
             ->get(route('questions.index'));
+        $response->dump();
 
         $response->assertInertia(fn ($page) => $page
             ->component('Questions/Index')

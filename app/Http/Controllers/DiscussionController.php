@@ -31,7 +31,11 @@ class DiscussionController extends Controller
             $query->where('status', $request->status);
         }
 
-        $query->whereHas('discussionable');
+        $query->where(function ($q) {
+            $q->whereHas('discussionable')
+              ->orWhereNull('discussionable_type')
+              ->orWhere('discussionable_type', 'general');
+        });
 
         $user = Auth::user();
         if ($user->isSuperAdmin()) {

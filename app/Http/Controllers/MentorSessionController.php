@@ -11,6 +11,8 @@ class MentorSessionController extends Controller
 {
     public function index()
     {
+        $this->authorize('viewAny', MentorSession::class);
+
         // Show open requests and the current user's mentoring activity
         $openRequests = MentorSession::with('discussion:id,title,anonymous_name')
             ->where('status', 'requested')
@@ -30,6 +32,8 @@ class MentorSessionController extends Controller
 
     public function accept(Request $request, MentorSession $mentorSession)
     {
+        $this->authorize('accept', $mentorSession);
+
         // A senior student accepts the request
         $mentorSession->update([
             'mentor_id' => $request->user()->id,
@@ -41,6 +45,8 @@ class MentorSessionController extends Controller
 
     public function complete(Request $request, MentorSession $mentorSession)
     {
+        $this->authorize('complete', $mentorSession);
+
         // For hackathon speed, allowing the mentor to auto-complete and earn the badge
         $mentorSession->update([
             'status' => 'completed',

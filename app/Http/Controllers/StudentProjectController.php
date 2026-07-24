@@ -11,8 +11,10 @@ class StudentProjectController extends Controller
     public function index(Request $request)
     {
         // For the demo, we show all published projects in the current user's institution
+        $institutionId = $request->user()->institutions()->first()?->id;
+
         $projects = StudentProject::with('user:id,name')
-            ->where('institution_id', $request->user()->institution_id) // Assuming user has institution_id in session/model
+            ->when($institutionId, fn($q) => $q->where('institution_id', $institutionId))
             ->where('status', 'published')
             ->latest()
             ->get();
@@ -32,10 +34,15 @@ class StudentProjectController extends Controller
             'live_demo_url' => ['nullable', 'url', 'max:255'],
         ]);
 
+        $this->authorize('create', StudentProject::class);
+
+        $institutionId = $request->user()->institutions()->first()?->id;
+        abort_if(!$institutionId, 403, 'You must be associated with an institution to create a project.');
+
         StudentProject::create([
             ...$validated,
             'user_id' => $request->user()->id,
-            'institution_id' => $request->user()->institutions()->first()->id ?? 1, // Fallback for demo
+            'institution_id' => $institutionId,
             'status' => 'published', // Auto-publish for hackathon demo speed
         ]);
 

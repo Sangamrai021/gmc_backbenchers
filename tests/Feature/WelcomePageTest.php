@@ -80,7 +80,6 @@ class WelcomePageTest extends TestCase
         // Create institution & semester for subjects
         $institution = Institution::create([
             'name' => 'GMC Tech Institute',
-            'code' => 'GMCTI',
         ]);
 
         $semester = Semester::create([

@@ -49,6 +49,7 @@ class SubmissionTest extends TestCase
             'teacher_id' => $this->teacher->id,
             'due_date' => now()->addWeek(),
             'allow_late_submission' => true,
+            'max_score' => 100,
         ]);
     }
 
