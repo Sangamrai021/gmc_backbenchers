@@ -1,7 +1,19 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
+import TeacherDashboard from '@/Components/TeacherDashboard';
 
 export default function Dashboard({ stats }) {
+    const user = usePage().props.auth.user;
+
+    if (user?.role === 'teacher') {
+        return (
+            <AuthenticatedLayout>
+                <Head title="Dashboard - Teacher" />
+                <TeacherDashboard stats={stats} />
+            </AuthenticatedLayout>
+        );
+    }
+
     return (
         <AuthenticatedLayout
             header={

@@ -4,6 +4,7 @@ import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import SuperAdminSidebar from '@/Components/SuperAdminSidebar';
 import StudentSidebar from '@/Components/StudentSidebar';
+import TeacherSidebar from '@/Components/TeacherSidebar';
 import { Link, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
@@ -127,6 +128,57 @@ export default function AuthenticatedLayout({ header, children }) {
                         </div>
                     </header>
                     <main className="px-margin-desktop pb-20 max-w-container-max mx-auto">
+                        {children}
+                    </main>
+                </div>
+            </div>
+        );
+    }
+
+    if (user?.role === 'teacher') {
+        return (
+            <div className="bg-background text-on-background font-body-md overflow-hidden flex h-screen">
+                <TeacherSidebar />
+                <div className="flex-1 ml-64 h-screen overflow-y-auto scroll-smooth">
+                    <header className="sticky top-0 z-40 bg-surface-container-lowest/80 backdrop-blur-md border-b border-outline-variant/10 px-6 py-2 flex justify-between items-center w-full">
+                        <div className="flex items-center gap-6 flex-1">
+                            <div className="relative w-full max-w-md">
+                                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+                                <input className="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 text-body-sm focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Search students, subjects, or resources..." type="text" />
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-4">
+                            <button className="p-2 rounded-full hover:bg-surface-container-low transition-colors relative">
+                                <span className="material-symbols-outlined text-on-surface-variant">notifications</span>
+                                <span className="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-surface-container-lowest"></span>
+                            </button>
+                            <button className="p-2 rounded-full hover:bg-surface-container-low transition-colors">
+                                <span className="material-symbols-outlined text-on-surface-variant">help</span>
+                            </button>
+                            <div className="h-8 w-[1px] bg-outline-variant/30 mx-2"></div>
+                            
+                            <div className="flex items-center gap-2 cursor-pointer group">
+                                <Dropdown>
+                                    <Dropdown.Trigger>
+                                        <button className="flex items-center gap-3 focus:outline-none">
+                                            <div className="text-right hidden sm:block">
+                                                <p className="font-label-md text-label-md font-bold text-on-surface">{user.name}</p>
+                                                <p className="font-label-md text-label-md text-on-surface-variant opacity-70">Teacher</p>
+                                            </div>
+                                            <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white ring-2 ring-primary uppercase font-bold text-lg">
+                                                {user.name.charAt(0)}
+                                            </div>
+                                        </button>
+                                    </Dropdown.Trigger>
+                                    <Dropdown.Content align="right">
+                                        <Dropdown.Link href={route('profile.edit')}>Profile</Dropdown.Link>
+                                        <Dropdown.Link href={route('logout')} method="post" as="button">Log Out</Dropdown.Link>
+                                    </Dropdown.Content>
+                                </Dropdown>
+                            </div>
+                        </div>
+                    </header>
+                    <main className="pb-8">
                         {children}
                     </main>
                 </div>
