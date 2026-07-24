@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Discussion;
 use App\Models\DiscussionAnswer;
 use App\Models\Vote;
+use App\Models\StudentActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,12 +19,11 @@ class VoteController extends Controller
             'type' => 'required|string|in:upvote,downvote',
         ]);
 
-        $morphMap = [
-            'discussion' => Discussion::class,
-            'discussion_answer' => DiscussionAnswer::class,
-        ];
-
-        $votable = ($morphMap[$validated['votable_type']])::findOrFail($validated['votable_id']);
+        $modelClass = \Illuminate\Database\Eloquent\Relations\Relation::getMorphedModel($validated['votable_type']);
+        if (!$modelClass) {
+            abort(400, 'Invalid votable type.');
+        }
+        $votable = $modelClass::findOrFail($validated['votable_id']);
 
         $existingVote = Vote::where([
             'user_id' => Auth::id(),
@@ -45,6 +45,14 @@ class VoteController extends Controller
                 'type' => $validated['type'],
             ]);
         }
+
+        StudentActivityLog::create([
+            'student_id' => Auth::id(),
+            'subject_id' => null,
+            'action' => 'voted_' . $validated['type'],
+            'loggable_id' => $validated['votable_id'],
+            'loggable_type' => $modelClass,
+        ]);
 
         return redirect()->back();
     }

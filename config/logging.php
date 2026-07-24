@@ -54,8 +54,16 @@ return [
 
         'stack' => [
             'driver' => 'stack',
-            'channels' => explode(',', (string) env('LOG_STACK', 'single')),
+            'channels' => explode(',', (string) env('LOG_STACK', 'single,custom_monolog')),
             'ignore_exceptions' => false,
+        ],
+
+        'custom_monolog' => [
+            'driver' => 'custom',
+            'via' => App\Logging\CustomMonologLogger::class,
+            'path' => storage_path('logs/monolog.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 14,
         ],
 
         'single' => [

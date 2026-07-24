@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -35,12 +36,13 @@ class AuthenticatedSessionController extends Controller
 
         $user = Auth::user();
 
-        $route = match ($user->role) {
-            'super_admin' => 'admin.dashboard',
-            'institution_admin' => 'institution.dashboard',
-            'teacher' => 'teacher.dashboard',
-            default => 'dashboard',
-        };
+        Log::channel('custom_monolog')->info('User logged in successfully', [
+            'user_id' => $user->id,
+            'email' => $user->email,
+            'role' => $user->role ?? 'student',
+        ]);
+
+        $route = 'dashboard';
 
         return redirect()->intended(route($route, absolute: false));
     }
@@ -50,6 +52,15 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        $user = Auth::user();
+
+        if ($user) {
+            Log::channel('custom_monolog')->info('User logged out', [
+                'user_id' => $user->id,
+                'email' => $user->email,
+            ]);
+        }
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

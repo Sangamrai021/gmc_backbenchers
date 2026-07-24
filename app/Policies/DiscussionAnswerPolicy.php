@@ -19,6 +19,21 @@ class DiscussionAnswerPolicy
 
     public function delete(User $user, DiscussionAnswer $answer): bool
     {
-        return $user->id === $answer->user_id || $user->isInstitutionAdmin() || $user->isSuperAdmin();
+        if ($user->id === $answer->user_id || $user->isSuperAdmin()) {
+            return true;
+        }
+
+        if ($user->isInstitutionAdmin()) {
+            $discussion = $answer->discussion;
+            $discussionable = $discussion->discussionable;
+            if ($discussionable instanceof \App\Models\Subject) {
+                return $user->institutions()->where('institutions.id', $discussionable->semester->institution_id)->exists();
+            }
+            if ($discussionable instanceof \App\Models\Assignment) {
+                return $user->institutions()->where('institutions.id', $discussionable->subject->semester->institution_id)->exists();
+            }
+        }
+
+        return false;
     }
 }

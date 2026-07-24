@@ -14,6 +14,20 @@ class DiscussionPolicy
         return true;
     }
 
+    private function canViewSubject(User $user, Subject $subject): bool
+    {
+        if ($user->isTeacher()) {
+            return $user->taughtSubjects()->where('subject_id', $subject->id)->exists();
+        }
+        if ($user->isStudent()) {
+            return $user->enrolledSemesters()->where('semester_id', $subject->semester_id)->exists();
+        }
+        if ($user->isInstitutionAdmin()) {
+            return $user->institutions()->where('institutions.id', $subject->semester->institution_id)->exists();
+        }
+        return false;
+    }
+
     public function view(User $user, Discussion $discussion): bool
     {
         if ($user->isSuperAdmin()) {
@@ -23,20 +37,11 @@ class DiscussionPolicy
         $discussionable = $discussion->discussionable;
 
         if ($discussionable instanceof Subject) {
-            if ($user->isTeacher()) {
-                return $user->taughtSubjects()->where('subject_id', $discussionable->id)->exists();
-            }
-            if ($user->isStudent()) {
-                return $user->enrolledSemesters()->where('semester_id', $discussionable->semester_id)->exists();
-            }
-            if ($user->isInstitutionAdmin()) {
-                return $user->institutions()->where('institutions.id', $discussionable->semester->institution_id)->exists();
-            }
-            return false;
+            return $this->canViewSubject($user, $discussionable);
         }
 
         if ($discussionable instanceof Assignment) {
-            return $this->view($user, $discussionable->discussions()->first() ?? new Discussion);
+            return $this->canViewSubject($user, $discussionable->subject);
         }
 
         return $user->id === $discussion->user_id;
@@ -49,23 +54,46 @@ class DiscussionPolicy
 
     public function update(User $user, Discussion $discussion): bool
     {
-        return $user->id === $discussion->user_id || $user->isInstitutionAdmin() || $user->isSuperAdmin();
+        if ($user->id === $discussion->user_id || $user->isSuperAdmin()) {
+            return true;
+        }
+
+        if ($user->isInstitutionAdmin()) {
+            $discussionable = $discussion->discussionable;
+            if ($discussionable instanceof Subject) {
+                return $user->institutions()->where('institutions.id', $discussionable->semester->institution_id)->exists();
+            }
+            if ($discussionable instanceof Assignment) {
+                return $user->institutions()->where('institutions.id', $discussionable->subject->semester->institution_id)->exists();
+            }
+        }
+
+        return false;
     }
 
     public function delete(User $user, Discussion $discussion): bool
     {
-        if ($user->isSuperAdmin() || $user->isInstitutionAdmin()) {
-            return true;
-        }
-
-        if ($user->id === $discussion->user_id) {
+        if ($user->isSuperAdmin() || $user->id === $discussion->user_id) {
             return true;
         }
 
         $discussionable = $discussion->discussionable;
 
+        if ($user->isInstitutionAdmin()) {
+            if ($discussionable instanceof Subject) {
+                return $user->institutions()->where('institutions.id', $discussionable->semester->institution_id)->exists();
+            }
+            if ($discussionable instanceof Assignment) {
+                return $user->institutions()->where('institutions.id', $discussionable->subject->semester->institution_id)->exists();
+            }
+        }
+
         if ($discussionable instanceof Subject && $user->isTeacher()) {
             return $user->taughtSubjects()->where('subject_id', $discussionable->id)->exists();
+        }
+
+        if ($discussionable instanceof Assignment && $user->isTeacher()) {
+            return $user->taughtSubjects()->where('subject_id', $discussionable->subject_id)->exists();
         }
 
         return false;

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreAnswerRequest;
 use App\Models\Discussion;
 use App\Models\DiscussionAnswer;
+use App\Models\StudentActivityLog;
 use Illuminate\Support\Facades\Auth;
 
 class DiscussionAnswerController extends Controller
@@ -19,7 +20,17 @@ class DiscussionAnswerController extends Controller
             'is_anonymous' => $request->boolean('is_anonymous'),
         ]);
 
-        $discussion->update(['status' => 'answered']);
+        StudentActivityLog::create([
+            'student_id' => Auth::id(),
+            'subject_id' => $discussion->discussionable_type === 'subject' ? $discussion->discussionable_id : null,
+            'action' => 'posted_answer',
+            'loggable_id' => $answer->id,
+            'loggable_type' => DiscussionAnswer::class,
+        ]);
+
+        if ($discussion->status === 'open') {
+            $discussion->update(['status' => 'answered']);
+        }
 
         return redirect()->route('questions.show', $discussion)
             ->with('success', 'Answer posted.');
@@ -54,6 +65,10 @@ class DiscussionAnswerController extends Controller
         $discussion = $answer->discussion;
 
         $this->authorize('update', $discussion);
+
+        if (!$answer->is_accepted) {
+            $discussion->answers()->where('id', '!=', $answer->id)->update(['is_accepted' => false]);
+        }
 
         $answer->update(['is_accepted' => !$answer->is_accepted]);
 

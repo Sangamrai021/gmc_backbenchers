@@ -6,6 +6,7 @@ use App\Http\Requests\StoreDiscussionRequest;
 use App\Http\Requests\UpdateDiscussionRequest;
 use App\Models\Discussion;
 use App\Models\Subject;
+use App\Models\StudentActivityLog;
 use App\Services\AnonymousNameGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,8 +34,10 @@ class DiscussionController extends Controller
         $query->whereHas('discussionable');
 
         $user = Auth::user();
-        if ($user->isTeacher()) {
-            $subjectIds = $user->taughtSubjects()->pluck('subject_id');
+        if ($user->isSuperAdmin()) {
+            // No additional restrictions
+        } elseif ($user->isTeacher()) {
+            $subjectIds = $user->taughtSubjects()->pluck('subjects.id');
             $query->where(function ($q) use ($subjectIds) {
                 $q->where('discussionable_type', 'subject')
                   ->whereIn('discussionable_id', $subjectIds);
@@ -89,6 +92,22 @@ class DiscussionController extends Controller
 
     public function store(StoreDiscussionRequest $request)
     {
+        $this->authorize('create', Discussion::class);
+
+        $morphMap = \Illuminate\Database\Eloquent\Relations\Relation::morphMap();
+        $modelClass = $morphMap[$request->discussionable_type] ?? null;
+        if (!$modelClass) {
+            abort(400, 'Invalid discussionable type.');
+        }
+        $discussionable = $modelClass::findOrFail($request->discussionable_id);
+
+        $dummyDiscussion = new Discussion([
+            'discussionable_id' => $request->discussionable_id,
+            'discussionable_type' => $request->discussionable_type,
+        ]);
+        $dummyDiscussion->setRelation('discussionable', $discussionable);
+        $this->authorize('view', $dummyDiscussion);
+
         $discussion = Discussion::create([
             'user_id' => Auth::id(),
             'discussionable_id' => $request->discussionable_id,
@@ -98,6 +117,14 @@ class DiscussionController extends Controller
             'category' => $request->category,
             'is_anonymous' => $request->boolean('is_anonymous'),
             'status' => 'open',
+        ]);
+
+        StudentActivityLog::create([
+            'student_id' => Auth::id(),
+            'subject_id' => $request->discussionable_type === 'subject' ? $request->discussionable_id : null,
+            'action' => 'created_discussion',
+            'loggable_id' => $discussion->id,
+            'loggable_type' => Discussion::class,
         ]);
 
         return redirect()->route('questions.show', $discussion)
@@ -124,8 +151,21 @@ class DiscussionController extends Controller
             'votes as downvotes_count' => fn($q) => $q->where('type', 'downvote'),
         ]);
 
+        $user = Auth::user();
+        $discussion->answers->transform(function ($answer) use ($user) {
+            $answer->permissions = [
+                'update' => $user->can('update', $answer),
+                'delete' => $user->can('delete', $answer),
+            ];
+            return $answer;
+        });
+
         return inertia('Questions/Show', [
             'discussion' => $discussion,
+            'permissions' => [
+                'update' => $user->can('update', $discussion),
+                'delete' => $user->can('delete', $discussion),
+            ],
         ]);
     }
 
