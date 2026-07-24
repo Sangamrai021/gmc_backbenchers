@@ -5,7 +5,9 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import SuperAdminSidebar from '@/Components/SuperAdminSidebar';
 import StudentSidebar from '@/Components/StudentSidebar';
 import TeacherSidebar from '@/Components/TeacherSidebar';
+import InstitutionAdminSidebar from '@/Components/InstitutionAdminSidebar';
 import { Link, usePage } from '@inertiajs/react';
+
 import { useState } from 'react';
 
 export default function AuthenticatedLayout({ header, children }) {
@@ -163,6 +165,57 @@ export default function AuthenticatedLayout({ header, children }) {
                         </div>
                     </header>
                     <main className="pb-8">
+                        {children}
+                    </main>
+                </div>
+            </div>
+        );
+    }
+
+    if (user?.role === 'institution_admin') {
+        return (
+            <div className="bg-background text-on-surface font-body-md overflow-hidden flex min-h-screen">
+                <InstitutionAdminSidebar />
+                <div className="flex-1 ml-64 flex flex-col h-screen overflow-y-auto scroll-smooth">
+                    {/* Top App Bar */}
+                    <header className="fixed top-0 right-0 w-[calc(100%-16rem)] h-16 bg-surface border-b border-outline-variant flex justify-between items-center px-6 z-40 shadow-sm">
+                        <div className="flex items-center gap-4 flex-1">
+                            <div className="relative w-96 focus-within:ring-2 focus-within:ring-primary rounded-lg transition-all duration-200">
+                                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+                                <input className="w-full bg-surface-container-low border-none rounded-lg pl-10 pr-4 py-2 font-body-sm focus:ring-0" placeholder="Search across Academic Nexus..." type="text" />
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-6">
+                            <div className="flex items-center gap-4">
+                                <button className="w-10 h-10 rounded-full hover:bg-surface-container-low flex items-center justify-center transition-colors">
+                                    <span className="material-symbols-outlined">notifications</span>
+                                </button>
+                                <button className="w-10 h-10 rounded-full hover:bg-surface-container-low flex items-center justify-center transition-colors">
+                                    <span className="material-symbols-outlined">help_outline</span>
+                                </button>
+                            </div>
+                            <div className="flex items-center gap-4 border-l border-outline-variant pl-6 cursor-pointer group">
+                                <Dropdown>
+                                    <Dropdown.Trigger>
+                                        <button className="flex items-center gap-3 focus:outline-none">
+                                            <div className="text-right hidden sm:block">
+                                                <p className="font-label-md text-label-md text-on-surface leading-tight">{user.name}</p>
+                                                <p className="font-body-sm text-[12px] text-on-surface-variant">Institution Admin</p>
+                                            </div>
+                                            <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white ring-2 ring-primary uppercase font-bold text-lg">
+                                                {user.name.charAt(0)}
+                                            </div>
+                                        </button>
+                                    </Dropdown.Trigger>
+                                    <Dropdown.Content align="right">
+                                        <Dropdown.Link href={route('profile.edit')}>Profile Settings</Dropdown.Link>
+                                        <Dropdown.Link href={route('logout')} method="post" as="button">Log Out</Dropdown.Link>
+                                    </Dropdown.Content>
+                                </Dropdown>
+                            </div>
+                        </div>
+                    </header>
+                    <main className="flex-1 w-full bg-background relative">
                         {children}
                     </main>
                 </div>
