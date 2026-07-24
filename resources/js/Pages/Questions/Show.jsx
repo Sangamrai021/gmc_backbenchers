@@ -4,15 +4,14 @@ import VoteButtons from '@/Components/VoteButtons';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 
-export default function Show({ discussion }) {
+export default function Show({ discussion, permissions }) {
     const { auth } = usePage().props;
     const [showAnswerForm, setShowAnswerForm] = useState(false);
     const [answerBody, setAnswerBody] = useState('');
     const [answerAnonymous, setAnswerAnonymous] = useState(false);
 
     const isOwner = auth.user.id === discussion.user_id;
-    const canModerate = auth.user.role === 'super_admin' || auth.user.role === 'institution_admin';
-    const canDelete = isOwner || canModerate || auth.user.role === 'teacher';
+    const canDelete = permissions?.delete || false;
 
     const handleDelete = () => {
         if (confirm('Delete this question?')) {
@@ -25,9 +24,12 @@ export default function Show({ discussion }) {
         router.post(route('questions.answers.store', discussion.id), {
             body: answerBody,
             is_anonymous: answerAnonymous,
+        }, {
+            onSuccess: () => {
+                setAnswerBody('');
+                setShowAnswerForm(false);
+            }
         });
-        setAnswerBody('');
-        setShowAnswerForm(false);
     };
 
     const handleVote = (type) => {
@@ -119,6 +121,7 @@ export default function Show({ discussion }) {
                                     key={answer.id}
                                     answer={answer}
                                     discussionUserId={discussion.user_id}
+                                    canAccept={permissions?.update}
                                 />
                             ))}
                         </div>

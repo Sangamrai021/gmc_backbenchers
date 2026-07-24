@@ -2,14 +2,14 @@ import { router, usePage } from '@inertiajs/react';
 import VoteButtons from '@/Components/VoteButtons';
 import { useState } from 'react';
 
-export default function AnswerCard({ answer, discussionUserId }) {
+export default function AnswerCard({ answer, discussionUserId, canAccept }) {
     const { auth } = usePage().props;
     const [isEditing, setIsEditing] = useState(false);
     const [editBody, setEditBody] = useState(answer.body);
 
     const isOwner = auth.user.id === answer.user_id;
-    const isDiscussionOwner = auth.user.id === discussionUserId;
-    const canModerate = auth.user.role === 'super_admin' || auth.user.role === 'institution_admin';
+    const canUpdate = answer.permissions?.update || false;
+    const canDelete = answer.permissions?.delete || false;
 
     const handleDelete = () => {
         if (confirm('Delete this answer?')) {
@@ -78,22 +78,22 @@ export default function AnswerCard({ answer, discussionUserId }) {
                         </div>
 
                         <div className="flex items-center gap-2">
-                            {isDiscussionOwner && !answer.is_accepted && (
+                            {canAccept && !answer.is_accepted && (
                                 <button onClick={handleAccept} className="text-xs text-green-600 hover:text-green-800 font-medium">
                                     Accept
                                 </button>
                             )}
-                            {isDiscussionOwner && answer.is_accepted && (
+                            {canAccept && answer.is_accepted && (
                                 <button onClick={handleAccept} className="text-xs text-yellow-600 hover:text-yellow-800 font-medium">
                                     Unaccept
                                 </button>
                             )}
-                            {isOwner && (
+                            {canUpdate && (
                                 <button onClick={() => setIsEditing(true)} className="text-xs text-indigo-600 hover:text-indigo-800 font-medium">
                                     Edit
                                 </button>
                             )}
-                            {(isOwner || canModerate) && (
+                            {canDelete && (
                                 <button onClick={handleDelete} className="text-xs text-red-600 hover:text-red-800 font-medium">
                                     Delete
                                 </button>
