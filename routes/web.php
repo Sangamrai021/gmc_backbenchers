@@ -3,7 +3,11 @@
 use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\DiscussionAnswerController;
 use App\Http\Controllers\DiscussionController;
+use App\Http\Controllers\EnrollmentController;
+use App\Http\Controllers\InstitutionAdminController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SemesterController;
+use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\VoteController;
 use Illuminate\Foundation\Application;
@@ -91,5 +95,30 @@ Route::middleware('auth')->prefix('assignments')->name('assignments.')->group(fu
 
     Route::post('/{assignment}/submissions', [SubmissionController::class, 'store'])->name('submissions.store');
 });
+
+Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [InstitutionAdminController::class, 'dashboard'])->name('dashboard');
+
+    Route::get('/semesters', [SemesterController::class, 'index'])->name('semesters.index');
+    Route::get('/semesters/create', [SemesterController::class, 'create'])->name('semesters.create');
+    Route::post('/semesters', [SemesterController::class, 'store'])->name('semesters.store');
+    Route::get('/semesters/{semester}/edit', [SemesterController::class, 'edit'])->name('semesters.edit');
+    Route::put('/semesters/{semester}', [SemesterController::class, 'update'])->name('semesters.update');
+    Route::delete('/semesters/{semester}', [SemesterController::class, 'destroy'])->name('semesters.destroy');
+
+    Route::get('/subjects', [SubjectController::class, 'index'])->name('subjects.index');
+    Route::get('/subjects/create', [SubjectController::class, 'create'])->name('subjects.create');
+    Route::post('/subjects', [SubjectController::class, 'store'])->name('subjects.store');
+    Route::get('/subjects/{subject}/edit', [SubjectController::class, 'edit'])->name('subjects.edit');
+    Route::put('/subjects/{subject}', [SubjectController::class, 'update'])->name('subjects.update');
+    Route::delete('/subjects/{subject}', [SubjectController::class, 'destroy'])->name('subjects.destroy');
+    Route::post('/subjects/{subject}/teachers', [SubjectController::class, 'assignTeacher'])->name('subjects.teachers.assign');
+    Route::delete('/subjects/{subject}/teachers/{teacher}', [SubjectController::class, 'removeTeacher'])->name('subjects.teachers.remove');
+
+    Route::get('/enrollments', [EnrollmentController::class, 'index'])->name('enrollments.index');
+    Route::delete('/enrollments/{semester}/{student}', [EnrollmentController::class, 'remove'])->name('enrollments.remove');
+});
+
+Route::middleware('auth')->post('/enroll', [EnrollmentController::class, 'enroll'])->name('enroll');
 
 require __DIR__.'/auth.php';

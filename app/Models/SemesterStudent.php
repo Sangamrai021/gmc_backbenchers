@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class SemesterStudent extends Pivot
 {
+    protected $table = 'semester_students';
+
     protected $fillable = [
         'semester_id',
         'section_id',

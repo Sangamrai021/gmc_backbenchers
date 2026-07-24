@@ -44,8 +44,8 @@ export default function AuthenticatedLayout({ header, children }) {
                                 </NavLink>
                                 {user.role === 'institution_admin' && (
                                     <NavLink
-                                        href={route('dashboard')}
-                                        active={route().current('institution.*')}
+                                        href={route('admin.dashboard')}
+                                        active={route().current('admin.*')}
                                     >
                                         Manage
                                     </NavLink>
@@ -174,6 +174,14 @@ export default function AuthenticatedLayout({ header, children }) {
                         >
                             Assignments
                         </ResponsiveNavLink>
+                        {user.role === 'institution_admin' && (
+                            <ResponsiveNavLink
+                                href={route('admin.dashboard')}
+                                active={route().current('admin.*')}
+                            >
+                                Manage
+                            </ResponsiveNavLink>
+                        )}
                     </div>
 
                     <div className="border-t border-gray-200 pb-1 pt-4">
