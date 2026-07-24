@@ -24,6 +24,12 @@ Route::get('/', function () {
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
+        'stats' => [
+            'questions' => \App\Models\Discussion::count(),
+            'answers' => \App\Models\DiscussionAnswer::count(),
+            'projects' => \App\Models\StudentProject::count(),
+            'subjects' => \App\Models\Subject::count(),
+        ],
     ]);
 });
 
