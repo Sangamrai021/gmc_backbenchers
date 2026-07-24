@@ -16,69 +16,53 @@ export default function AuthenticatedLayout({ header, children }) {
 
     if (user?.role === 'super_admin') {
         return (
-            <div className="min-h-screen bg-gray-100 flex font-sans">
+            <div className="flex min-h-screen text-on-surface font-body-md overflow-hidden bg-background">
                 <SuperAdminSidebar />
-                <div className="flex-1 flex flex-col min-w-0">
-                    <nav className="border-b border-gray-200 bg-white sticky top-0 z-20">
-                        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                            <div className="flex h-16 justify-between items-center">
-                                <div className="flex items-center gap-2">
-                                    <span className="px-2.5 py-1 rounded-md bg-sky-100 text-sky-800 text-xs font-bold uppercase tracking-wider">
-                                        Super Admin Mode
-                                    </span>
-                                </div>
-
-                                <div className="flex items-center">
-                                    <Dropdown>
-                                        <Dropdown.Trigger>
-                                            <button
-                                                type="button"
-                                                className="inline-flex items-center rounded-md border border-transparent bg-white px-3 py-2 text-sm font-medium text-gray-500 hover:text-gray-700 focus:outline-none"
-                                            >
-                                                {user.name}
-                                                <svg
-                                                    className="-me-0.5 ms-2 h-4 w-4"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    viewBox="0 0 20 20"
-                                                    fill="currentColor"
-                                                >
-                                                    <path
-                                                        fillRule="evenodd"
-                                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                        clipRule="evenodd"
-                                                    />
-                                                </svg>
-                                            </button>
-                                        </Dropdown.Trigger>
-
-                                        <Dropdown.Content align="right">
-                                            <Dropdown.Link href={route('profile.edit')}>
-                                                Profile
-                                            </Dropdown.Link>
-                                            <Dropdown.Link
-                                                href={route('logout')}
-                                                method="post"
-                                                as="button"
-                                            >
-                                                Log Out
-                                            </Dropdown.Link>
-                                        </Dropdown.Content>
-                                    </Dropdown>
-                                </div>
+                <main className="ml-64 flex-1 flex flex-col h-screen overflow-y-auto scroll-smooth">
+                    {/* TopNavBar */}
+                    <header className="sticky top-0 z-40 flex justify-between items-center px-6 py-2 w-full bg-surface-container-lowest border-b border-outline-variant/10">
+                        <div className="flex items-center gap-6">
+                            <div className="relative w-80">
+                                <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+                                <input className="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 text-body-sm focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Search research, students, or data..." type="text" />
                             </div>
                         </div>
-                    </nav>
-
-                    {header && (
-                        <header className="bg-white shadow-sm border-b border-gray-200">
-                            <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                                {header}
+                        <div className="flex items-center gap-4">
+                            <button className="p-2 rounded-full hover:bg-surface-container-low transition-colors relative">
+                                <span className="material-symbols-outlined text-on-surface-variant">notifications</span>
+                                <span className="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
+                            </button>
+                            <button className="p-2 rounded-full hover:bg-surface-container-low transition-colors">
+                                <span className="material-symbols-outlined text-on-surface-variant">help</span>
+                            </button>
+                            <div className="h-8 w-[1px] bg-outline-variant/30 mx-1"></div>
+                            <button className="flex items-center gap-1 px-4 py-1.5 bg-primary text-white rounded-full font-label-md hover:opacity-90 transition-opacity">
+                                <span className="material-symbols-outlined text-[18px]">add</span>
+                                New Entry
+                            </button>
+                            <div className="flex items-center gap-2 cursor-pointer group ml-2">
+                                <Dropdown>
+                                    <Dropdown.Trigger>
+                                        <button className="flex items-center gap-3 focus:outline-none">
+                                            <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white ring-2 ring-primary uppercase font-bold text-lg">
+                                                {user?.name?.charAt(0) || 'A'}
+                                            </div>
+                                        </button>
+                                    </Dropdown.Trigger>
+                                    <Dropdown.Content align="right">
+                                        <Dropdown.Link href={route('profile.edit')}>Profile Settings</Dropdown.Link>
+                                        <Dropdown.Link href={route('logout')} method="post" as="button">Log Out</Dropdown.Link>
+                                    </Dropdown.Content>
+                                </Dropdown>
                             </div>
-                        </header>
-                    )}
-
-                    <main className="flex-1 p-4 sm:p-6 lg:p-8">{children}</main>
-                </div>
+                        </div>
+                    </header>
+                    
+                    {/* Content Body */}
+                    <div className="flex-1 w-full">
+                        {children}
+                    </div>
+                </main>
             </div>
         );
     }

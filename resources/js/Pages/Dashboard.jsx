@@ -1,6 +1,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, usePage } from '@inertiajs/react';
 import TeacherDashboard from '@/Components/TeacherDashboard';
+import SuperAdminDashboard from '@/Components/SuperAdminDashboard';
 
 export default function Dashboard({ stats }) {
     const user = usePage().props.auth.user;
@@ -10,6 +11,15 @@ export default function Dashboard({ stats }) {
             <AuthenticatedLayout>
                 <Head title="Dashboard - Teacher" />
                 <TeacherDashboard stats={stats} />
+            </AuthenticatedLayout>
+        );
+    }
+
+    if (user?.role === 'super_admin') {
+        return (
+            <AuthenticatedLayout>
+                <Head title="Dashboard - Super Admin" />
+                <SuperAdminDashboard stats={stats} />
             </AuthenticatedLayout>
         );
     }
