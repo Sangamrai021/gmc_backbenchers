@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Resource extends Model
 {
+    use \App\Models\Traits\TeachableScope;
+
     protected $fillable = [
         'subject_id',
         'teacher_id',

@@ -1,7 +1,13 @@
 <?php
 
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\DiscussionAnswerController;
+use App\Http\Controllers\EnrollmentController;
+use App\Http\Controllers\InstitutionAdminController;
+use App\Http\Controllers\SemesterController;
+use App\Http\Controllers\SubjectController;
+use App\Http\Controllers\SubmissionController;
 use App\Http\Controllers\DiscussionController;
 use App\Http\Controllers\MentorSessionController;
 use App\Http\Controllers\ProfileController;
@@ -108,5 +114,39 @@ Route::middleware('auth')->prefix('questions')->name('questions.')->group(functi
         });
     });
 });
+
+Route::middleware('auth')->prefix('assignments')->name('assignments.')->group(function () {
+    Route::get('/', [AssignmentController::class, 'index'])->name('index');
+    Route::get('/create', [AssignmentController::class, 'create'])->name('create');
+    Route::post('/', [AssignmentController::class, 'store'])->name('store');
+
+    Route::get('/submissions/{submission}', [SubmissionController::class, 'show'])->name('submissions.show');
+    Route::put('/submissions/{submission}', [SubmissionController::class, 'update'])->name('submissions.update');
+
+    Route::get('/{assignment}', [AssignmentController::class, 'show'])->name('show');
+    Route::get('/{assignment}/edit', [AssignmentController::class, 'edit'])->name('edit');
+    Route::put('/{assignment}', [AssignmentController::class, 'update'])->name('update');
+    Route::delete('/{assignment}', [AssignmentController::class, 'destroy'])->name('destroy');
+
+    Route::post('/{assignment}/submissions', [SubmissionController::class, 'store'])->name('submissions.store');
+});
+
+Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [InstitutionAdminController::class, 'index'])->name('dashboard');
+    
+    Route::resource('semesters', SemesterController::class)->except(['show']);
+    Route::resource('subjects', SubjectController::class)->except(['show']);
+    
+    Route::post('/subjects/{subject}/teachers', [SubjectController::class, 'assignTeacher'])->name('subjects.teachers.assign');
+    Route::delete('/subjects/{subject}/teachers/{teacher}', [SubjectController::class, 'removeTeacher'])->name('subjects.teachers.remove');
+    
+    Route::get('/enrollments', [EnrollmentController::class, 'index'])->name('enrollments.index');
+    Route::delete('/enrollments/{semester}/{student}', [EnrollmentController::class, 'remove'])->name('enrollments.remove');
+});
+
+Route::middleware('auth')->post('/enroll', [EnrollmentController::class, 'enroll'])->name('enroll');
+
+Route::resource('resources', \App\Http\Controllers\ResourceController::class)->middleware(['auth', 'verified']);
+Route::resource('announcements', \App\Http\Controllers\AnnouncementController::class)->middleware(['auth', 'verified']);
 
 require __DIR__ . '/auth.php';

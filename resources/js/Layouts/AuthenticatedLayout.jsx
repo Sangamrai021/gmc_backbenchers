@@ -182,6 +182,18 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Assignments
                                 </NavLink>
+                                <NavLink
+                                    href={route('resources.index')}
+                                    active={route().current('resources.*')}
+                                >
+                                    Resources
+                                </NavLink>
+                                <NavLink
+                                    href={route('announcements.index')}
+                                    active={route().current('announcements.*')}
+                                >
+                                    Announcements
+                                </NavLink>
                                 {user.role === 'institution_admin' && (
                                     <NavLink
                                         href={route('admin.dashboard')}
@@ -313,6 +325,18 @@ export default function AuthenticatedLayout({ header, children }) {
                             active={route().current('assignments.*')}
                         >
                             Assignments
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('resources.index')}
+                            active={route().current('resources.*')}
+                        >
+                            Resources
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route('announcements.index')}
+                            active={route().current('announcements.*')}
+                        >
+                            Announcements
                         </ResponsiveNavLink>
                         {user.role === 'institution_admin' && (
                             <ResponsiveNavLink

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, useForm, Link } from '@inertiajs/react';
-import { Briefcase, Code, ExternalLink, Github, Plus, Loader2 } from 'lucide-react';
+import { Briefcase, Code, ExternalLink, Plus, Loader2 } from 'lucide-react';
 
 export default function Showcase({ auth, projects }) {
     const [showForm, setShowForm] = useState(false);
@@ -112,9 +112,7 @@ export default function Showcase({ auth, projects }) {
                                     <span className="text-sm font-medium text-gray-900">By {project.user.name}</span>
                                     <div className="flex gap-3 text-gray-400">
                                         {project.github_url && (
-                                            <a href={project.github_url} target="_blank" rel="noreferrer" className="hover:text-gray-900 transition">
-                                                <Github size={20} />
-                                            </a>
+                                                <span className="text-sm font-semibold">GitHub</span>
                                         )}
                                         {project.live_demo_url && (
                                             <a href={project.live_demo_url} target="_blank" rel="noreferrer" className="hover:text-indigo-600 transition">

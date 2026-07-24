@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Announcement extends Model
 {
+    use \App\Models\Traits\TeachableScope;
+
     protected $fillable = [
         'subject_id',
         'user_id',
