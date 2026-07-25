@@ -11,7 +11,7 @@ export default function SuperAdminLayout({ header, children, activeItem = '' }) 
             <SuperAdminSidebar activeItem={activeItem} />
 
             {/* Main Content Area */}
-            <div className="flex-1 flex flex-col min-w-0">
+            <div className="flex-1 flex flex-col min-w-0 ml-64">
                 {/* Top Navigation Bar */}
                 <header className="h-16 bg-white border-b border-gray-200 px-4 sm:px-6 flex items-center justify-between shadow-sm sticky top-0 z-20">
                     <div className="flex items-center gap-3">
