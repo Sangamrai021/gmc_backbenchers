@@ -1,9 +1,10 @@
 import { Head, Link, useForm } from '@inertiajs/react';
 import { route } from 'ziggy-js';
+import SuperAdminLayout from '@/Layouts/SuperAdminLayout';
 
 export default function SpamLogs({ logs }) {
   return (
-    <>
+    <SuperAdminLayout activeItem="Spam Logs">
       <Head title="Spam Logs" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
@@ -38,6 +39,6 @@ export default function SpamLogs({ logs }) {
           </table>
         </div>
       </div>
-    </>
+    </SuperAdminLayout>
   );
 }
