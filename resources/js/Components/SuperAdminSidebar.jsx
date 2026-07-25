@@ -50,17 +50,7 @@ export default function SuperAdminSidebar({ activeItem = '' }) {
                     <span className="material-symbols-outlined">domain</span>
                     <span className="font-label-md text-label-md">Institutions</span>
                 </Link>
-                <Link
-                    href={safeRoute('admin.institution_admins', '/admin/institution_admins')}
-                    className={`flex items-center gap-4 px-4 py-2 rounded-lg font-medium transition-all ${
-                        isActive('/admin/institution_admins') || activeItem === 'Institution Admins'
-                            ? 'text-primary font-bold bg-primary-container/10 border-r-4 border-primary opacity-80'
-                            : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
-                    }`}
-                >
-                    <span className="material-symbols-outlined">admin_panel_settings</span>
-                    <span className="font-label-md text-label-md">Institution Admins</span>
-                </Link>
+
                 <Link
                     href={safeRoute('admin.users', '/admin/users')}
                     className={`flex items-center gap-4 px-4 py-2 rounded-lg font-medium transition-all ${
@@ -83,28 +73,7 @@ export default function SuperAdminSidebar({ activeItem = '' }) {
                     <span className="material-symbols-outlined">analytics</span>
                     <span className="font-label-md text-label-md">Platform Analytics</span>
                 </Link>
-                <Link
-                    href={safeRoute('admin.monitoring', '/admin/monitoring')}
-                    className={`flex items-center gap-4 px-4 py-2 rounded-lg font-medium transition-all ${
-                        isActive('/admin/monitoring') || activeItem === 'System Monitoring'
-                            ? 'text-primary font-bold bg-primary-container/10 border-r-4 border-primary opacity-80'
-                            : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
-                    }`}
-                >
-                    <span className="material-symbols-outlined">monitor_heart</span>
-                    <span className="font-label-md text-label-md">System Monitoring</span>
-                </Link>
-                <Link
-                    href={safeRoute('admin.useractivity', '/admin/useractivity')}
-                    className={`flex items-center gap-4 px-4 py-2 rounded-lg font-medium transition-all ${
-                        isActive('/admin/useractivity') || activeItem === 'User Activity'
-                            ? 'text-primary font-bold bg-primary-container/10 border-r-4 border-primary opacity-80'
-                            : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
-                    }`}
-                >
-                    <span className="material-symbols-outlined">security</span>
-                    <span className="font-label-md text-label-md">Security & Audit Logs</span>
-                </Link>
+
                 <Link
                     href={safeRoute('admin.roles', '/admin/roles')}
                     className={`flex items-center gap-4 px-4 py-2 rounded-lg font-medium transition-all ${
@@ -139,17 +108,6 @@ export default function SuperAdminSidebar({ activeItem = '' }) {
                     <span className="font-label-md text-label-md">Announcements</span>
                 </Link>
                 <Link
-                    href={safeRoute('questions.index', '/questions')}
-                    className={`flex items-center gap-4 px-4 py-2 rounded-lg font-medium transition-all ${
-                        isActive('/questions') || activeItem === 'Questions'
-                            ? 'text-primary font-bold bg-primary-container/10 border-r-4 border-primary opacity-80'
-                            : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
-                    }`}
-                >
-                    <span className="material-symbols-outlined">support_agent</span>
-                    <span className="font-label-md text-label-md">Support/Tickets</span>
-                </Link>
-                <Link
                     href={safeRoute('admin.grievances.index', '/admin/grievances')}
                     className={`flex items-center gap-4 px-4 py-2 rounded-lg font-medium transition-all ${
                         isActive('/admin/grievances') || activeItem === 'Grievances'
@@ -181,20 +139,6 @@ export default function SuperAdminSidebar({ activeItem = '' }) {
                 >
                     <span className="material-symbols-outlined">shield</span>
                     <span className="font-label-md text-label-md">Spam Logs</span>
-                </Link>
-                <Link
-                    href="#"
-                    className="flex items-center gap-4 px-4 py-2 rounded-lg text-on-surface-variant font-medium hover:bg-surface-container-high hover:text-on-surface transition-all"
-                >
-                    <span className="material-symbols-outlined">payments</span>
-                    <span className="font-label-md text-label-md">Subscription/Billing</span>
-                </Link>
-                <Link
-                    href="#"
-                    className="flex items-center gap-4 px-4 py-2 rounded-lg text-on-surface-variant font-medium hover:bg-surface-container-high hover:text-on-surface transition-all"
-                >
-                    <span className="material-symbols-outlined">settings_applications</span>
-                    <span className="font-label-md text-label-md">System Configuration</span>
                 </Link>
             </nav>
             <div className="px-4 mt-auto pt-6 border-t border-outline-variant/10 pb-4">
