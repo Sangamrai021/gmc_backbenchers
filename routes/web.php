@@ -59,6 +59,7 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
     Route::get('/admin/analytics', [\App\Http\Controllers\Admin\SuperAdminPageController::class, 'analytics'])->name('admin.analytics');
     Route::get('/admin/monitoring', [\App\Http\Controllers\Admin\SuperAdminPageController::class, 'monitoring'])->name('admin.monitoring');
     Route::get('/admin/roles', [\App\Http\Controllers\Admin\SuperAdminPageController::class, 'roles'])->name('admin.roles');
+    Route::put('/admin/roles/{user}', [\App\Http\Controllers\Admin\SuperAdminPageController::class, 'updateRole'])->name('admin.roles.update');
     Route::get('/admin/reports', [\App\Http\Controllers\Admin\SuperAdminPageController::class, 'reports'])->name('admin.reports');
 });
 
