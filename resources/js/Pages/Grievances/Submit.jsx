@@ -51,109 +51,144 @@ export default function Submit({ institutions, categories, semesters, subjects, 
     return true;
   }
 
-  return (
-    <>
-      <Head title={`${t('submit.title')}`} />
+  const content = (
+    <div className="min-h-screen bg-surface-container-lowest pb-12 pt-6">
+      <Head title={t('submit.title')} />
 
-      <div className="max-w-2xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="bg-gradient-to-r from-primary to-primary/80 rounded-3xl p-8 text-white shadow-lg relative overflow-hidden mb-8">
+          <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 rounded-full blur-2xl -mt-10 -mr-10 mix-blend-overlay"></div>
+          <div className="relative z-10">
+            <h1 className="text-3xl font-extrabold mb-2 tracking-tight">{t('submit.title')}</h1>
+            <p className="text-primary-50 font-medium text-lg">{t('submit.subtitle')}</p>
+          </div>
+        </div>
+
+        {/* Progress Bar */}
         <div className="mb-8">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between relative">
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-surface-container rounded-full -z-10"></div>
+            <div className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-primary transition-all duration-300 -z-10 rounded-full" 
+                 style={{ width: `${(step / 2) * 100}%` }}></div>
+            
             {steps.map((s, i) => (
-              <div key={s} className="flex items-center flex-1">
-                <button onClick={() => i < step && setStep(i)} disabled={i > step}
-                  className={`flex items-center gap-2 transition-all ${i <= step ? 'cursor-pointer' : 'cursor-default'}`}>
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
-                    i < step ? 'bg-indigo-600 text-white shadow-md' :
-                    i === step ? 'bg-indigo-600 text-white shadow-md ring-4 ring-indigo-100 scale-110' :
-                    'bg-gray-100 text-gray-400'}`}>
-                    {i < step ? (
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
-                      </svg>
-                    ) : i + 1}
-                  </div>
-                  <span className={`text-xs font-medium hidden sm:block ${i <= step ? 'text-gray-900' : 'text-gray-400'}`}>
-                    {i === 0 ? t('submit.issue_details') : i === 1 ? t('submit.desc_label') : t('submit.your_info')}
-                  </span>
-                </button>
-                {i < steps.length - 1 && (
-                  <div className="flex-1 h-0.5 mx-3 bg-gray-200 rounded" />
-                )}
+              <div key={s} className="flex flex-col items-center gap-2 bg-surface-container-lowest px-2">
+                <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-colors ${
+                  i <= step ? 'bg-primary text-white shadow-md' : 'bg-surface-container-high text-outline'
+                }`}>
+                  {i + 1}
+                </div>
+                <span className={`text-xs font-bold uppercase tracking-wider hidden sm:block ${i <= step ? 'text-primary' : 'text-outline'}`}>
+                  {t(`submit.steps.${s}`)}
+                </span>
               </div>
             ))}
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} encType="multipart/form-data">
-          <div className="absolute opacity-0 pointer-events-none" tabIndex={-1} aria-hidden="true">
-            <input type="text" name="website" autoComplete="off" value={data.website} onChange={e => setData('website', e.target.value)} tabIndex={-1} />
-          </div>
-
+        {/* Form Container */}
+        <form onSubmit={handleSubmit} className="bg-white/90 backdrop-blur-md rounded-3xl border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-6 sm:p-8">
           {step === 0 && (
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200/60 p-5 sm:p-7 space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('submit.org_label')}</label>
-                <select value={data.institution_id} onChange={e => setData('institution_id', e.target.value)}
-                  className="w-full rounded-lg border-gray-300 border px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
-                  <option value="">Select institution</option>
-                  {institutions.map(inst => (
-                    <option key={inst.id} value={inst.id}>{inst.name}</option>
-                  ))}
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('submit.category_label')}</label>
-                <select value={data.category_id} onChange={e => setData('category_id', e.target.value)}
-                  className="w-full rounded-lg border-gray-300 border px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
-                  <option value="">Select category</option>
-                  {categories.map(cat => (
-                    <option key={cat.id} value={cat.id}>{cat.name}</option>
-                  ))}
-                </select>
-              </div>
-
-              {semesters.length > 0 && (
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">{t('submit.semester_label')}</label>
-                  <select value={data.semester_id} onChange={e => { setData('semester_id', e.target.value); setData('subject_id', ''); }}
-                    className="w-full rounded-lg border-gray-300 border px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
-                    <option value="">Select semester</option>
-                    {semesters.map(s => (
-                      <option key={s.id} value={s.id}>{s.name}</option>
+                  <label className="block text-sm font-bold text-on-surface mb-2 uppercase tracking-wide">
+                    {t('submit.institution')} <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    value={data.institution_id}
+                    onChange={e => setData('institution_id', e.target.value)}
+                    className="w-full bg-surface-container-lowest border border-surface-container-low text-on-surface rounded-xl px-4 py-3 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-medium"
+                    required
+                  >
+                    <option value="">{t('submit.select_institution')}</option>
+                    {institutions.map(inst => (
+                      <option key={inst.id} value={inst.id}>{inst.name}</option>
+                    ))}
+                  </select>
+                  {errors.institution_id && <p className="mt-1 text-sm text-red-600">{errors.institution_id}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-bold text-on-surface mb-2 uppercase tracking-wide">
+                    {t('submit.category')} <span className="text-red-500">*</span>
+                  </label>
+                  <select
+                    value={data.category_id}
+                    onChange={e => setData('category_id', e.target.value)}
+                    className="w-full bg-surface-container-lowest border border-surface-container-low text-on-surface rounded-xl px-4 py-3 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-medium"
+                    required
+                  >
+                    <option value="">{t('submit.select_category')}</option>
+                    {filteredCategories.map(cat => (
+                      <option key={cat.id} value={cat.id}>{cat.name}</option>
+                    ))}
+                  </select>
+                  {errors.category_id && <p className="mt-1 text-sm text-red-600">{errors.category_id}</p>}
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <label className="block text-sm font-bold text-on-surface mb-2 uppercase tracking-wide">{t('submit.semester')}</label>
+                  <select
+                    value={data.semester_id}
+                    onChange={e => setData('semester_id', e.target.value)}
+                    className="w-full bg-surface-container-lowest border border-surface-container-low text-on-surface rounded-xl px-4 py-3 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-medium"
+                  >
+                    <option value="">{t('submit.optional')}</option>
+                    {semesters.map(sem => (
+                      <option key={sem.id} value={sem.id}>{sem.name}</option>
                     ))}
                   </select>
                 </div>
-              )}
-
-              {subjects.length > 0 && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">{t('submit.subject_label')}</label>
-                  <select value={data.subject_id} onChange={e => setData('subject_id', e.target.value)}
-                    className="w-full rounded-lg border-gray-300 border px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
-                    <option value="">Select subject</option>
-                    {subjects.filter(s => !data.semester_id || s.semester_id === parseInt(data.semester_id)).map(s => (
-                      <option key={s.id} value={s.id}>{s.name}</option>
+                  <label className="block text-sm font-bold text-on-surface mb-2 uppercase tracking-wide">{t('submit.subject')}</label>
+                  <select
+                    value={data.subject_id}
+                    onChange={e => setData('subject_id', e.target.value)}
+                    className="w-full bg-surface-container-lowest border border-surface-container-low text-on-surface rounded-xl px-4 py-3 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-medium"
+                  >
+                    <option value="">{t('submit.optional')}</option>
+                    {subjects.map(sub => (
+                      <option key={sub.id} value={sub.id}>{sub.name}</option>
                     ))}
                   </select>
                 </div>
-              )}
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('submit.priority_label')}</label>
-                <select value={data.priority} onChange={e => setData('priority', e.target.value)}
-                  className="w-full rounded-lg border-gray-300 border px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none">
-                  {Object.entries(priorities).map(([k, v]) => (
-                    <option key={k} value={k}>{v}</option>
-                  ))}
-                </select>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('submit.title_label')}</label>
-                <input type="text" value={data.title} onChange={e => setData('title', e.target.value)} maxLength={200}
+                <label className="block text-sm font-bold text-on-surface mb-2 uppercase tracking-wide">
+                  {t('submit.title')} <span className="text-red-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  value={data.title}
+                  onChange={e => setData('title', e.target.value)}
+                  className="w-full bg-surface-container-lowest border border-surface-container-low text-on-surface rounded-xl px-4 py-3 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-medium"
                   placeholder={t('submit.title_placeholder')}
-                  className="w-full rounded-lg border-gray-300 border px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
+                  required
+                />
+                {errors.title && <p className="mt-1 text-sm text-red-600">{errors.title}</p>}
+              </div>
+
+              <div>
+                <label className="block text-sm font-bold text-on-surface mb-3 uppercase tracking-wide">{t('submit.priority.label')}</label>
+                <div className="flex gap-4">
+                  {Object.entries(priorities).map(([key, label]) => (
+                    <label key={key} className="flex items-center gap-2 cursor-pointer group">
+                      <input
+                        type="radio"
+                        name="priority"
+                        value={key}
+                        checked={data.priority === key}
+                        onChange={e => setData('priority', e.target.value)}
+                        className="w-5 h-5 text-primary border-gray-300 focus:ring-primary cursor-pointer"
+                      />
+                      <span className="text-sm font-bold text-on-surface group-hover:text-primary transition-colors">{label}</span>
+                    </label>
+                  ))}
+                </div>
               </div>
             </div>
           )}
