@@ -12,11 +12,16 @@ class Assignment extends Model
 
     protected $fillable = [
         'subject_id',
+        'section_id',
         'teacher_id',
+        'status',
+        'start_date',
         'title',
         'description',
         'attachment',
+        'attachments',
         'max_score',
+        'passing_score',
         'due_date',
         'allow_late_submission',
     ];
@@ -24,9 +29,16 @@ class Assignment extends Model
     protected function casts(): array
     {
         return [
+            'start_date' => 'datetime',
             'due_date' => 'datetime',
             'allow_late_submission' => 'boolean',
+            'attachments' => 'array',
         ];
+    }
+
+    public function section(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Section::class);
     }
 
     public function subject(): \Illuminate\Database\Eloquent\Relations\BelongsTo

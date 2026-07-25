@@ -1,0 +1,29 @@
+
+   INFO  Running migrations.  
+
+  2026_07_25_035928_enhance_assignments_and_submissions_tables .. 24.31ms FAIL
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[42S21]: Column already exists: 1060 Duplicate column name 'status' (Connection: mysql, Host: 127.0.0.1, Port: 3306, Database: student_portal, SQL: alter table `assignments` add `status` varchar(255) not null default 'draft' after `teacher_id`)
+
+  at vendor/laravel/framework/src/Illuminate/Database/Connection.php:838
+    834▕             $exceptionType = $this->isUniqueConstraintError($e)
+    835▕                 ? UniqueConstraintViolationException::class
+    836▕                 : QueryException::class;
+    837▕ 
+  ➜ 838▕             throw new $exceptionType(
+    839▕                 $this->getNameWithReadWriteType(),
+    840▕                 $query,
+    841▕                 $this->prepareBindings($bindings),
+    842▕                 $e,
+
+      [2m+9 vendor frames [22m
+
+  10  database/migrations/2026_07_25_035928_enhance_assignments_and_submissions_tables.php:11
+      Illuminate\Support\Facades\Facade::__callStatic()
+      [2m+26 vendor frames [22m
+
+  37  artisan:16
+      Illuminate\Foundation\Application::handleCommand()
+

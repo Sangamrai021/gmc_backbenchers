@@ -12,6 +12,7 @@ class Submission extends Model
     protected $fillable = [
         'assignment_id',
         'student_id',
+        'attempt_number',
         'content',
         'file_url',
         'submitted_at',
@@ -19,6 +20,7 @@ class Submission extends Model
         'feedback',
         'is_late',
         'status',
+        'is_struggling',
     ];
 
     protected function casts(): array
@@ -26,6 +28,7 @@ class Submission extends Model
         return [
             'submitted_at' => 'datetime',
             'is_late' => 'boolean',
+            'is_struggling' => 'boolean',
         ];
     }
 
