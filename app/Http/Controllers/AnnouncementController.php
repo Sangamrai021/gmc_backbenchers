@@ -48,6 +48,17 @@ class AnnouncementController extends Controller
 
         $user = Auth::user();
         
+        // Verify teacher is assigned to this subject
+        if ($user->isTeacher()) {
+            $isAssigned = $user->taughtSubjects()
+                ->where('subject_id', $request->subject_id)
+                ->exists();
+
+            if (!$isAssigned) {
+                abort(403, 'You are not assigned to this subject.');
+            }
+        }
+
         $data = $request->validated();
         $data['user_id'] = $user->id;
 
@@ -71,6 +82,19 @@ class AnnouncementController extends Controller
     public function update(UpdateAnnouncementRequest $request, Announcement $announcement)
     {
         $this->authorize('update', $announcement);
+
+        $user = Auth::user();
+
+        // If subject_id is being changed, verify teacher is assigned to the new subject
+        if ($request->has('subject_id') && $request->subject_id != $announcement->subject_id && $user->isTeacher()) {
+            $isAssigned = $user->taughtSubjects()
+                ->where('subject_id', $request->subject_id)
+                ->exists();
+
+            if (!$isAssigned) {
+                abort(403, 'You are not assigned to this subject.');
+            }
+        }
 
         $announcement->update($request->validated());
 

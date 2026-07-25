@@ -16,6 +16,20 @@ class GrievanceFeedController extends Controller
             ->visible()
             ->whereNull('deleted_at');
 
+        if ($user = auth()->user()) {
+            if ($user->isTeacher()) {
+                $subjectIds = $user->taughtSubjects()->pluck('subjects.id');
+                $query->whereIn('subject_id', $subjectIds);
+            } elseif ($user->isStudent()) {
+                $semesterIds = $user->enrolledSemesters()->pluck('semesters.id');
+                $subjectIds = \App\Models\Subject::whereIn('semester_id', $semesterIds)->pluck('id');
+                $query->whereIn('subject_id', $subjectIds);
+            } elseif ($user->isInstitutionAdmin()) {
+                $institutionIds = $user->institutions()->pluck('institutions.id');
+                $query->whereIn('institution_id', $institutionIds);
+            }
+        }
+
         if ($request->filled('category_id')) {
             $query->where('category_id', $request->category_id);
         }
