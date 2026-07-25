@@ -39,7 +39,7 @@ export default function SuperAdminLayout({ header, children, activeItem = '' }) 
                                 <Dropdown.Link href={route('profile.edit')}>
                                     Profile Settings
                                 </Dropdown.Link>
-                                <Dropdown.Link href={route('logout')} method="post" as="button">
+                                <Dropdown.Link href={route('logout')} method="post" as="button" onClick={(e) => { if (!confirm('Do you want to logout?')) e.preventDefault(); }}>
                                     Log Out
                                 </Dropdown.Link>
                             </Dropdown.Content>

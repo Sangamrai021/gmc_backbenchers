@@ -7,7 +7,7 @@ export default function StudentSidebar({ activeItem = '' }) {
 
     const navItems = [
         { name: 'Dashboard', icon: 'dashboard', route: 'student.dashboard', fallback: '/student/dashboard', pattern: '/student/dashboard' },
-        { name: 'My Subjects', icon: 'auto_stories', route: 'subjects.index', fallback: '/subjects', pattern: '/subjects' },
+        { name: 'My Subjects', icon: 'auto_stories', route: 'student.subjects', fallback: '/student/mysubject', pattern: '/student/mysubject' },
         { name: 'Discussions', icon: 'forum', route: 'questions.index', fallback: '/questions', pattern: '/questions' },
         { name: 'Assignments', icon: 'assignment', route: 'assignments.index', fallback: '/assignments', pattern: '/assignments' },
         { name: 'Resources', icon: 'folder_open', route: 'resources.index', fallback: '/resources', pattern: '/resources' },
@@ -64,6 +64,7 @@ export default function StudentSidebar({ activeItem = '' }) {
                     href={safeRoute('logout', '/logout')}
                     method="post"
                     as="button"
+                    onClick={(e) => { if (!confirm('Do you want to logout?')) e.preventDefault(); }}
                     className="w-full flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-lg group"
                 >
                     <span className="material-symbols-outlined group-active:scale-[0.98]">logout</span>

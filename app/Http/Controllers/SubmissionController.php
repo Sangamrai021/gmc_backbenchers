@@ -56,11 +56,19 @@ class SubmissionController extends Controller
 
         $isLate = $assignment->due_date && now()->gt($assignment->due_date);
 
+        $fileUrls = [];
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                $path = $file->store('submissions', 'public');
+                $fileUrls[] = '/storage/' . $path;
+            }
+        }
+
         $submission = Submission::create([
             'assignment_id' => $assignment->id,
             'student_id' => $user->id,
             'content' => $request->content,
-            'file_url' => $request->file_url,
+            'file_url' => count($fileUrls) > 0 ? json_encode($fileUrls) : null,
             'submitted_at' => now(),
             'is_late' => $isLate,
             'status' => 'submitted',

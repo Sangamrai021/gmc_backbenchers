@@ -43,4 +43,14 @@ class Submission extends Model
     {
         return $this->student?->name ?? 'Unknown';
     }
+
+    public function getFileUrlsAttribute(): array
+    {
+        if (empty($this->file_url)) {
+            return [];
+        }
+        
+        $decoded = json_decode($this->file_url, true);
+        return is_array($decoded) ? $decoded : [$this->file_url];
+    }
 }

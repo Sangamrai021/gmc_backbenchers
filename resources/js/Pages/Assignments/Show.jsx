@@ -1,12 +1,15 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link, router, usePage } from '@inertiajs/react';
+import { Head, Link, router, usePage, useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function Show({ assignment, submission }) {
     const { auth } = usePage().props;
     const [showSubmitForm, setShowSubmitForm] = useState(false);
-    const [content, setContent] = useState('');
-    const [fileUrl, setFileUrl] = useState('');
+
+    const { data, setData, post, processing, errors, reset } = useForm({
+        content: '',
+        files: [],
+    });
 
     const isTeacherOwner = auth.user.role === 'teacher' && assignment.teacher_id === auth.user.id;
     const canEdit = isTeacherOwner || auth.user.role === 'super_admin' || auth.user.role === 'institution_admin';
@@ -19,13 +22,12 @@ export default function Show({ assignment, submission }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        router.post(route('assignments.submissions.store', assignment.id), {
-            content,
-            file_url: fileUrl,
+        post(route('assignments.submissions.store', assignment.id), {
+            onSuccess: () => {
+                reset();
+                setShowSubmitForm(false);
+            },
         });
-        setContent('');
-        setFileUrl('');
-        setShowSubmitForm(false);
     };
 
     const isPastDue = assignment.due_date && new Date(assignment.due_date) < new Date();
@@ -98,8 +100,19 @@ export default function Show({ assignment, submission }) {
                                 <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
                                     <h3 className="text-lg font-semibold text-gray-900 mb-3">Your Submission</h3>
                                     <p className="text-gray-700 whitespace-pre-wrap mb-2">{submission.content}</p>
-                                    {submission.file_url && (
-                                        <p className="text-sm text-indigo-600">File: {submission.file_url}</p>
+                                    {submission.file_urls && submission.file_urls.length > 0 && (
+                                        <div className="mt-2">
+                                            <p className="text-sm font-medium text-gray-700 mb-1">Attached Files:</p>
+                                            <ul className="list-disc pl-5">
+                                                {submission.file_urls.map((url, index) => (
+                                                    <li key={index}>
+                                                        <a href={url} target="_blank" rel="noreferrer" className="text-sm text-indigo-600 hover:underline">
+                                                            Attachment {index + 1}
+                                                        </a>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
                                     )}
                                     <div className="mt-3 flex items-center gap-4 text-sm text-gray-500">
                                         <span>Status: <span className="font-medium">{submission.status}</span></span>
@@ -121,21 +134,22 @@ export default function Show({ assignment, submission }) {
                                         <form onSubmit={handleSubmit} className="bg-white rounded-lg border border-gray-200 p-5">
                                             <h4 className="text-sm font-semibold text-gray-700 mb-3">Submit Your Work</h4>
                                             <textarea
-                                                value={content}
-                                                onChange={(e) => setContent(e.target.value)}
+                                                value={data.content}
+                                                onChange={(e) => setData('content', e.target.value)}
                                                 className="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
                                                 rows={5}
                                                 placeholder="Write your answer..."
                                             />
+                                            {errors.content && <p className="text-sm text-red-600 mt-1">{errors.content}</p>}
                                             <div className="mt-3">
-                                                <label className="block text-sm font-medium text-gray-700 mb-1">File URL (optional)</label>
+                                                <label className="block text-sm font-medium text-gray-700 mb-1">Upload Files (optional)</label>
                                                 <input
-                                                    type="text"
-                                                    value={fileUrl}
-                                                    onChange={(e) => setFileUrl(e.target.value)}
-                                                    className="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                                    placeholder="https://example.com/my-file.pdf"
+                                                    type="file"
+                                                    multiple
+                                                    onChange={(e) => setData('files', Array.from(e.target.files))}
+                                                    className="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 p-2"
                                                 />
+                                                {errors.files && <p className="text-sm text-red-600 mt-1">{errors.files}</p>}
                                             </div>
                                             <div className="mt-3 flex gap-2 justify-end">
                                                 <button
@@ -147,7 +161,8 @@ export default function Show({ assignment, submission }) {
                                                 </button>
                                                 <button
                                                     type="submit"
-                                                    className="px-4 py-2 text-sm bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                                                    disabled={processing}
+                                                    className="px-4 py-2 text-sm bg-indigo-600 text-white rounded-md hover:bg-indigo-700 disabled:opacity-50"
                                                 >
                                                     Submit
                                                 </button>

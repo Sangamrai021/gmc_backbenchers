@@ -73,6 +73,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         return Inertia::render('Student/Dashboard', ['stats' => $stats]);
     })->name('student.dashboard');
+
+    Route::get('/student/mysubject', function () {
+        $user = Auth::user();
+        if (!$user->isStudent()) {
+            return redirect()->route('dashboard');
+        }
+        $semesterIds = $user->enrolledSemesters()->pluck('semesters.id');
+        $subjects = \App\Models\Subject::whereIn('semester_id', $semesterIds)->with('semester.institution', 'teachers')->get();
+        return Inertia::render('Student/MySubject', ['subjects' => $subjects]);
+    })->name('student.subjects');
 });
 
 Route::middleware('auth')->prefix('questions')->name('questions.')->group(function () {

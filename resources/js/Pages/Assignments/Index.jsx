@@ -1,18 +1,23 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, Link } from '@inertiajs/react';
+import { Head, Link, usePage } from '@inertiajs/react';
 
 export default function Index({ assignments }) {
+    const { auth } = usePage().props;
+    const isStudent = auth.user.role === 'student';
+
     return (
         <AuthenticatedLayout
             header={
                 <div className="flex items-center justify-between">
                     <h2 className="text-xl font-semibold leading-tight text-gray-800">Assignments</h2>
-                    <Link
-                        href={route('assignments.create')}
-                        className="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none transition"
-                    >
-                        Create Assignment
-                    </Link>
+                    {!isStudent && (
+                        <Link
+                            href={route('assignments.create')}
+                            className="inline-flex items-center px-4 py-2 bg-indigo-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 focus:outline-none transition"
+                        >
+                            Create Assignment
+                        </Link>
+                    )}
                 </div>
             }
         >
@@ -23,12 +28,14 @@ export default function Index({ assignments }) {
                     {assignments.data.length === 0 ? (
                         <div className="text-center py-12">
                             <p className="text-gray-500 text-lg">No assignments yet.</p>
-                            <Link
-                                href={route('assignments.create')}
-                                className="mt-2 inline-block text-indigo-600 hover:text-indigo-800"
-                            >
-                                Create the first assignment
-                            </Link>
+                            {!isStudent && (
+                                <Link
+                                    href={route('assignments.create')}
+                                    className="mt-2 inline-block text-indigo-600 hover:text-indigo-800"
+                                >
+                                    Create the first assignment
+                                </Link>
+                            )}
                         </div>
                     ) : (
                         <div className="space-y-4">
