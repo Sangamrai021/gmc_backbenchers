@@ -1,10 +1,11 @@
 import { Head, Link } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 import { StatusBadge, PriorityBadge } from '../../../Components/UI/Badge';
+import SuperAdminLayout from '@/Layouts/SuperAdminLayout';
 
 export default function Index({ grievances, filters }) {
   return (
-    <>
+    <SuperAdminLayout activeItem="Grievances">
       <Head title="Manage Grievances" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
@@ -76,6 +77,6 @@ export default function Index({ grievances, filters }) {
           </div>
         )}
       </div>
-    </>
+    </SuperAdminLayout>
   );
 }
