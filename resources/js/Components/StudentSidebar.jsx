@@ -11,13 +11,8 @@ export default function StudentSidebar({ activeItem = '' }) {
         { name: 'Discussions', icon: 'forum', route: 'questions.index', fallback: '/questions', pattern: '/questions' },
         { name: 'Assignments', icon: 'assignment', route: 'assignments.index', fallback: '/assignments', pattern: '/assignments' },
         { name: 'Resources', icon: 'folder_open', route: 'resources.index', fallback: '/resources', pattern: '/resources' },
-        { name: 'Calendar', icon: 'calendar_month', route: '#', fallback: '#', pattern: '/calendar' },
-        { name: 'Notifications', icon: 'notifications', route: '#', fallback: '#', pattern: '/notifications' },
-        { name: 'Learning Insights', icon: 'analytics', route: '#', fallback: '#', pattern: '/insights' },
-        { name: 'Achievements', icon: 'emoji_events', route: '#', fallback: '#', pattern: '/achievements' },
         { name: 'Grievances', icon: 'report', route: 'grievances.create', fallback: '/grievances/submit', pattern: '/grievances' },
         { name: 'Profile', icon: 'account_circle', route: 'profile.edit', fallback: '/profile', pattern: '/profile' },
-        { name: 'Settings', icon: 'settings', route: '#', fallback: '#', pattern: '/settings' },
     ];
 
     const safeRoute = (name, fallback) => {

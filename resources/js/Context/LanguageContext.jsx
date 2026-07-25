@@ -45,7 +45,37 @@ export function useLanguage() {
 
 const enTranslations = {
   nav: { home: 'Home', feed: 'Feed', submit: 'Submit Grievance', track: 'Track', grievances: 'Grievances', moderation: 'Moderation', spam_logs: 'Spam Logs' },
-  submit: { title: 'Submit a Grievance', issue_details: 'Grievance Details', desc_label: 'Description', your_info: 'Your Information', org_label: 'Institution', category_label: 'Category', semester_label: 'Semester', subject_label: 'Subject', priority_label: 'Priority', title_label: 'Title', title_placeholder: 'Enter a short title', desc_placeholder: 'Describe your grievance in detail...', photo_label: 'Photo (optional)', video_label: 'Video (optional)', anonymous_label: 'Submit Anonymously', submit_btn: 'Submit Grievance', submitting: 'Submitting...' },
+  submit: { 
+    title: 'Submit a Grievance',
+    subtitle: 'We are here to listen and help resolve your concerns.',
+    steps: {
+      issue_details: 'Issue Details',
+      description: 'Description',
+      review: 'Review'
+    },
+    institution: 'Institution',
+    select_institution: 'Select an Institution',
+    category: 'Category',
+    select_category: 'Select a Category',
+    semester: 'Semester',
+    optional: 'Optional',
+    subject: 'Subject',
+    priority: { label: 'Priority' },
+    title_placeholder: 'Enter a short title',
+    description: 'Description',
+    description_placeholder: 'Describe your grievance in detail...',
+    min_chars: 'minimum characters',
+    evidence: {
+      label: 'Evidence (Optional)',
+      photo: 'Photo',
+      video: 'Video'
+    },
+    website: 'Related Website (Optional)',
+    anonymous_note: 'Your identity will be kept completely confidential from the institution and other students.',
+    anonymous: 'Submit Anonymously',
+    submit_btn: 'Submit Grievance', 
+    submitting: 'Submitting...' 
+  },
   status: { title: 'Track Your Grievance', desc: 'Enter your reference code to see the current status.', code_label: 'Reference Code', code_placeholder: 'e.g. EDU-000001', lookup_btn: 'Look Up', searching: 'Searching...', details_title: 'Grievance Details', reference: 'Reference', institution: 'Institution', priority: 'Priority', status: 'Status', assigned_to: 'Assigned To' },
   priorities: { low: 'Low', medium: 'Medium', high: 'High', critical: 'Critical' },
   statuses: { received: 'Received', in_progress: 'In Progress', resolved: 'Resolved' },
@@ -56,7 +86,37 @@ const enTranslations = {
 
 const npTranslations = {
   nav: { home: 'गृहपृष्ठ', feed: 'फीड', submit: 'उजुरी दिनुहोस्', track: 'ट्र्याक', grievances: 'उजुरीहरू', moderation: 'मध्यस्थता', spam_logs: 'स्पैम लग' },
-  submit: { title: 'उजुरी दिनुहोस्', issue_details: 'उजुरी विवरण', desc_label: 'विवरण', your_info: 'तपाईंको जानकारी', org_label: 'संस्था', category_label: 'श्रेणी', semester_label: 'सेमेस्टर', subject_label: 'विषय', priority_label: 'प्राथमिकता', title_label: 'शीर्षक', title_placeholder: 'छोटो शीर्षक लेख्नुहोस्', desc_placeholder: 'विस्तृतमा वर्णन गर्नुहोस्...', photo_label: 'फोटो (वैकल्पिक)', video_label: 'भिडियो (वैकल्पिक)', anonymous_label: 'गुमनाम रूपमा पेश गर्नुहोस्', submit_btn: 'उजुरी पेश गर्नुहोस्', submitting: 'पेश हुँदै...' },
+  submit: { 
+    title: 'उजुरी दिनुहोस्',
+    subtitle: 'हामी तपाईंका समस्या सुन्न र समाधान गर्न यहाँ छौं।',
+    steps: {
+      issue_details: 'उजुरी विवरण',
+      description: 'विवरण',
+      review: 'समीक्षा'
+    },
+    institution: 'संस्था',
+    select_institution: 'संस्था चयन गर्नुहोस्',
+    category: 'श्रेणी',
+    select_category: 'श्रेणी चयन गर्नुहोस्',
+    semester: 'सेमेस्टर',
+    optional: 'वैकल्पिक',
+    subject: 'विषय',
+    priority: { label: 'प्राथमिकता' },
+    title_placeholder: 'छोटो शीर्षक लेख्नुहोस्',
+    description: 'विवरण',
+    description_placeholder: 'विस्तृतमा वर्णन गर्नुहोस्...',
+    min_chars: 'न्यूनतम अक्षरहरू',
+    evidence: {
+      label: 'प्रमाण (वैकल्पिक)',
+      photo: 'फोटो',
+      video: 'भिडियो'
+    },
+    website: 'सम्बन्धित वेबसाइट (वैकल्पिक)',
+    anonymous_note: 'तपाईंको पहिचान संस्था र अन्य विद्यार्थीहरूबाट पूर्ण रूपमा गोप्य राखिनेछ।',
+    anonymous: 'गुमनाम रूपमा पेश गर्नुहोस्',
+    submit_btn: 'उजुरी पेश गर्नुहोस्', 
+    submitting: 'पेश हुँदै...' 
+  },
   status: { title: 'उजुरी ट्र्याक गर्नुहोस्', desc: 'हालको स्थिति हेर्न आफ्नो सन्दर्भ कोड प्रविष्ट गर्नुहोस्।', code_label: 'सन्दर्भ कोड', code_placeholder: 'जस्तै EDU-000001', lookup_btn: 'खोज्नुहोस्', searching: 'खोज्दै...', details_title: 'उजुरी विवरण', reference: 'सन्दर्भ', institution: 'संस्था', priority: 'प्राथमिकता', status: 'स्थिति', assigned_to: 'जिम्मेवार व्यक्ति' },
   priorities: { low: 'कम', medium: 'मध्यम', high: 'उच्च', critical: 'गम्भीर' },
   statuses: { received: 'प्राप्त', in_progress: 'प्रक्रियामा', resolved: 'समाधान' },
