@@ -18,7 +18,7 @@ export default function Dashboard({ stats }) {
                         <h3 className="text-4xl font-extrabold text-on-surface tracking-tight">
                             Welcome back, <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60">{firstName}</span>
                         </h3>
-                        <p className="text-lg text-on-surface-variant mt-2 font-medium">Ready to conquer your classes today?</p>
+                        <p className="text-lg text-on-surface-variant mt-2 font-medium">Here's an overview of your academic progress.</p>
                     </div>
                     <div className="flex gap-3">
                         <Link href={route('questions.create')} className="bg-white text-on-surface hover:text-primary border border-surface-container-low px-5 py-2.5 rounded-xl shadow-sm hover:shadow-md transition-all font-semibold flex items-center gap-2">
@@ -85,30 +85,27 @@ export default function Dashboard({ stats }) {
                     {/* Left Column: Assignments & Activity */}
                     <div className="lg:col-span-2 space-y-6">
 
-                        {/* Ask Without Fear Hero Card */}
-                        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-primary/80 p-8 shadow-xl shadow-primary/20">
-                            <div className="absolute top-0 right-0 -mt-8 -mr-8 w-64 h-64 bg-white/10 rounded-full blur-3xl mix-blend-overlay"></div>
-                            <div className="absolute bottom-0 left-0 -mb-8 -ml-8 w-48 h-48 bg-white/10 rounded-full blur-2xl mix-blend-overlay"></div>
-
-                            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
-                                <div className="flex-1 text-white">
-                                    <h4 className="text-3xl font-bold mb-3">Ask Without Fear 💡</h4>
-                                    <p className="text-primary-50 text-lg mb-6 max-w-md">No judgment, just learning. Ask your teachers or classmates anonymously and clear your doubts instantly.</p>
-                                    <Link href={route('questions.create')} className="inline-flex items-center gap-2 bg-white text-primary font-bold px-6 py-3 rounded-xl hover:bg-primary-50 transition-colors shadow-lg">
-                                        <span className="material-symbols-outlined">send</span> Post a Question
+                        {/* Community Discussions */}
+                        <div className="rounded-3xl bg-surface-container-lowest border border-surface-container-low p-8 shadow-sm">
+                            <div className="flex flex-col md:flex-row items-start justify-between gap-8">
+                                <div className="flex-1">
+                                    <h4 className="text-2xl font-bold text-on-surface mb-2">Community Discussions</h4>
+                                    <p className="text-on-surface-variant font-medium mb-6">Connect with peers and teachers. Ask questions or help others solve problems.</p>
+                                    <Link href={route('questions.create')} className="inline-flex items-center gap-2 bg-primary text-white font-bold px-5 py-2.5 rounded-xl hover:bg-primary/90 transition-colors shadow-sm">
+                                        <span className="material-symbols-outlined text-[18px]">add</span> New Discussion
                                     </Link>
                                 </div>
-                                <div className="w-full md:w-auto bg-black/10 backdrop-blur-md border border-white/20 rounded-2xl p-5 shadow-inner">
-                                    <p className="text-xs font-bold text-white/80 uppercase tracking-widest mb-4">Trending Now</p>
+                                <div className="w-full md:w-1/2 bg-surface-container/50 rounded-2xl p-5 border border-surface-container-low">
+                                    <p className="text-xs font-bold text-on-surface-variant uppercase tracking-widest mb-4">Trending Topics</p>
                                     <div className="space-y-3">
-                                        <div className="flex items-center justify-between gap-4 text-white hover:text-white cursor-pointer group">
-                                            <p className="text-sm font-medium">Explain Data Normalization</p>
-                                            <span className="text-xs bg-white/20 px-2 py-1 rounded-md flex items-center gap-1"><span className="material-symbols-outlined text-[12px]">visibility</span> 120</span>
-                                        </div>
-                                        <div className="flex items-center justify-between gap-4 text-white hover:text-white cursor-pointer group">
-                                            <p className="text-sm font-medium">Java Polymorphism Help</p>
-                                            <span className="text-xs bg-white/20 px-2 py-1 rounded-md flex items-center gap-1"><span className="material-symbols-outlined text-[12px]">visibility</span> 84</span>
-                                        </div>
+                                        <Link href={route('questions.index')} className="flex items-center justify-between gap-4 group">
+                                            <p className="text-sm font-medium text-on-surface group-hover:text-primary transition-colors">Data Normalization Techniques</p>
+                                            <span className="text-xs bg-surface-container text-on-surface-variant px-2 py-1 rounded-md flex items-center gap-1"><span className="material-symbols-outlined text-[12px]">forum</span> 12</span>
+                                        </Link>
+                                        <Link href={route('questions.index')} className="flex items-center justify-between gap-4 group">
+                                            <p className="text-sm font-medium text-on-surface group-hover:text-primary transition-colors">Understanding Polymorphism</p>
+                                            <span className="text-xs bg-surface-container text-on-surface-variant px-2 py-1 rounded-md flex items-center gap-1"><span className="material-symbols-outlined text-[12px]">forum</span> 8</span>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>

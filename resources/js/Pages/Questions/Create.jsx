@@ -42,16 +42,16 @@ export default function Create({ subjects }) {
                                     <select
                                         value={form.discussionable_id}
                                         onChange={(e) => setForm({ ...form, discussionable_id: e.target.value })}
-                                        className="w-full bg-surface-container-lowest border border-surface-container-low text-on-surface rounded-xl px-4 py-3 appearance-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-medium"
+                                        className="w-full bg-surface-container-lowest border border-surface-container-low text-on-surface rounded-xl px-4 py-3 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-medium"
                                         required
                                     >
+                                        <option value="">Select a subject...</option>
                                         {subjects.map((subject) => (
                                             <option key={subject.id} value={subject.id}>
-                                                {subject.name} ({subject.semester?.name})
+                                                {subject.name} {subject.semester ? `(${subject.semester.name})` : ''}
                                             </option>
                                         ))}
                                     </select>
-                                    <span className="material-symbols-outlined absolute right-4 top-3.5 text-outline pointer-events-none">expand_more</span>
                                 </div>
                             </div>
 
@@ -61,7 +61,7 @@ export default function Create({ subjects }) {
                                     <select
                                         value={form.category}
                                         onChange={(e) => setForm({ ...form, category: e.target.value })}
-                                        className="w-full bg-surface-container-lowest border border-surface-container-low text-on-surface rounded-xl px-4 py-3 appearance-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-medium"
+                                        className="w-full bg-surface-container-lowest border border-surface-container-low text-on-surface rounded-xl px-4 py-3 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-medium"
                                     >
                                         <option value="">Select category...</option>
                                         <option value="conceptual">Conceptual Problem</option>
@@ -70,7 +70,6 @@ export default function Create({ subjects }) {
                                         <option value="career">Career Question</option>
                                         <option value="technical">Technical Issue</option>
                                     </select>
-                                    <span className="material-symbols-outlined absolute right-4 top-3.5 text-outline pointer-events-none">expand_more</span>
                                 </div>
                             </div>
                         </div>
