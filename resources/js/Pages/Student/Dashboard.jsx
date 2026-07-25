@@ -21,8 +21,8 @@ export default function Dashboard({ stats }) {
                         <p className="text-lg text-on-surface-variant mt-2 font-medium">Here's an overview of your academic progress.</p>
                     </div>
                     <div className="flex gap-3">
-                        <Link href={route('questions.create')} className="bg-white text-on-surface hover:text-primary border border-surface-container-low px-5 py-2.5 rounded-xl shadow-sm hover:shadow-md transition-all font-semibold flex items-center gap-2">
-                            <span className="material-symbols-outlined text-[20px]">add_comment</span> Ask Doubt
+                        <Link href={route('grievances.create')} className="bg-white text-on-surface hover:text-error border border-surface-container-low px-5 py-2.5 rounded-xl shadow-sm hover:shadow-md transition-all font-semibold flex items-center gap-2">
+                            <span className="material-symbols-outlined text-[20px]">report</span> Report Grievance
                         </Link>
                     </div>
                 </section>
