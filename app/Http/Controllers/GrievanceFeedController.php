@@ -91,11 +91,30 @@ class GrievanceFeedController extends Controller
         });
 
         $categories = GrievanceCategory::active()->sorted()->get(['id', 'name']);
+        
+        $institutions = \App\Models\Institution::where('is_active', true)->orderBy('name')->get();
+        $semesters = collect();
+        $subjects = collect();
+
+        if ($user && $user->isStudent()) {
+            $semesterIds = $user->enrolledSemesters()->pluck('semesters.id');
+            $semesters = \App\Models\Semester::whereIn('id', $semesterIds)->get();
+            $subjects = \App\Models\Subject::whereIn('semester_id', $semesterIds)->get();
+        }
 
         return Inertia::render('Grievances/Feed', [
             'grievances' => $grievances,
             'filters' => $request->only(['category_id', 'status', 'institution_id', 'sort']),
             'categories' => $categories,
+            'institutions' => $institutions,
+            'semesters' => $semesters,
+            'subjects' => $subjects,
+            'priorities' => [
+                'low' => 'Low',
+                'medium' => 'Medium',
+                'high' => 'High',
+                'critical' => 'Critical',
+            ],
         ]);
     }
 }
