@@ -16,7 +16,9 @@ class DashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $stats = ['questions' => 0, 'answers' => 0, 'subjects' => 0, 'grievances' => 0, 'open_grievances' => 0, 'resolved_grievances' => 0, 'critical_grievances' => 0];
+        $stats = ['questions' => 0, 'answers' => 0, 'subjects' => 0, 'grievances' => 0, 'open_grievances' => 0, 'resolved_grievances' => 0, 'critical_grievances' => 0, 'to_grade' => 0];
+        $recentSubmissions = [];
+        $recentQuestions = [];
 
         if ($user->isTeacher()) {
             $subjectIds = $user->taughtSubjects()->pluck('subjects.id');
@@ -28,6 +30,19 @@ class DashboardController extends Controller
             $stats['open_grievances'] = Grievance::whereIn('subject_id', $subjectIds)->visible()->where('status', '!=', 'resolved')->count();
             $stats['resolved_grievances'] = Grievance::whereIn('subject_id', $subjectIds)->visible()->where('status', 'resolved')->count();
             $stats['critical_grievances'] = Grievance::whereIn('subject_id', $subjectIds)->visible()->where('priority', 'critical')->count();
+            
+            $stats['to_grade'] = \App\Models\Submission::whereHas('assignment', function ($q) use ($subjectIds) {
+                $q->whereIn('subject_id', $subjectIds);
+            })->where('status', 'submitted')->count();
+
+            $recentSubmissions = \App\Models\Submission::whereHas('assignment', function ($q) use ($subjectIds) {
+                $q->whereIn('subject_id', $subjectIds);
+            })->with(['student', 'assignment'])->latest('submitted_at')->take(5)->get();
+
+            $recentQuestions = Discussion::where('discussionable_type', 'subject')
+                ->whereIn('discussionable_id', $subjectIds)
+                ->with(['user'])
+                ->latest()->take(5)->get();
         } elseif ($user->isStudent()) {
             return redirect()->route('student.dashboard');
         } elseif ($user->isInstitutionAdmin()) {
@@ -55,6 +70,10 @@ class DashboardController extends Controller
             $stats['critical_grievances'] = Grievance::visible()->where('priority', 'critical')->count();
         }
 
-        return Inertia::render('Dashboard', ['stats' => $stats]);
+        return Inertia::render('Dashboard', [
+            'stats' => $stats,
+            'recentSubmissions' => $recentSubmissions,
+            'recentQuestions' => $recentQuestions
+        ]);
     }
 }

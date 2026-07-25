@@ -11,6 +11,7 @@ use App\Events\QuestionPosted;
 use App\Services\AnonymousNameGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class DiscussionController extends Controller
 {
@@ -66,9 +67,27 @@ class DiscussionController extends Controller
 
         $discussions = $query->latest()->paginate(20);
 
+        // Fetch subjects for the "Ask Question" modal dropdown
+        if ($user->isTeacher()) {
+            $subjects = $user->taughtSubjects()->with('semester.institution')->get();
+        } elseif ($user->isStudent()) {
+            $semesterIds = $user->enrolledSemesters()->pluck('semesters.id');
+            $subjects = Subject::whereIn('semester_id', $semesterIds)
+                ->with('semester.institution')
+                ->get();
+        } elseif ($user->isInstitutionAdmin()) {
+            $institutionIds = $user->institutions()->pluck('institutions.id');
+            $subjects = Subject::whereHas('semester', function ($q) use ($institutionIds) {
+                $q->whereIn('institution_id', $institutionIds);
+            })->with('semester.institution')->get();
+        } else {
+            $subjects = Subject::with('semester.institution')->get();
+        }
+
         return inertia('Questions/Index', [
             'discussions' => $discussions,
             'filters' => $request->only(['subject_id', 'status']),
+            'subjects' => $subjects,
         ]);
     }
 
@@ -113,6 +132,8 @@ class DiscussionController extends Controller
         $dummyDiscussion->setRelation('discussionable', $discussionable);
         $this->authorize('view', $dummyDiscussion);
 
+        $trackingToken = 'QA-' . strtoupper(Str::random(6));
+
         $discussion = Discussion::create([
             'user_id' => Auth::id(),
             'discussionable_id' => $request->discussionable_id,
@@ -122,6 +143,7 @@ class DiscussionController extends Controller
             'category' => $request->category,
             'is_anonymous' => $request->boolean('is_anonymous'),
             'status' => 'open',
+            'tracking_token' => $trackingToken,
         ]);
 
         StudentActivityLog::create([
@@ -134,8 +156,23 @@ class DiscussionController extends Controller
 
         event(new QuestionPosted($discussion));
 
-        return redirect()->route('questions.show', $discussion)
-            ->with('success', 'Your question has been posted.');
+        return redirect()->back()
+            ->with('success', 'Your question has been posted.')
+            ->with('tracking_token', $trackingToken);
+    }
+
+    public function track(Request $request)
+    {
+        $request->validate(['token' => 'required|string']);
+        $token = strtoupper(trim($request->token));
+        
+        $discussion = Discussion::where('tracking_token', $token)->first();
+        
+        if (!$discussion) {
+            return back()->with('error', 'No question found with that tracking token.');
+        }
+        
+        return redirect()->route('questions.show', $discussion);
     }
 
     public function show(Discussion $discussion)

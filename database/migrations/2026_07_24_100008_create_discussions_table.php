@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('category')->nullable();
             $table->boolean('is_anonymous')->default(false);
             $table->string('status')->default('open');
+            $table->string('tracking_token')->unique()->nullable();
             $table->timestamps();
             $table->softDeletes();
 

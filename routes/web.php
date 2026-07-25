@@ -109,6 +109,7 @@ Route::middleware('auth')->prefix('questions')->name('questions.')->group(functi
     Route::get('/', [DiscussionController::class, 'index'])->name('index');
     Route::get('/create', [DiscussionController::class, 'create'])->name('create');
     Route::post('/', [DiscussionController::class, 'store'])->name('store');
+    Route::post('/track', [DiscussionController::class, 'track'])->name('track');
     Route::get('/{discussion}', [DiscussionController::class, 'show'])->name('show');
     Route::get('/{discussion}/edit', [DiscussionController::class, 'edit'])->name('edit');
     Route::put('/{discussion}', [DiscussionController::class, 'update'])->name('update');
