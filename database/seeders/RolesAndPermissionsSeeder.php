@@ -29,13 +29,13 @@ class RolesAndPermissionsSeeder extends Seeder
         ];
 
         foreach ($permissions as $permission) {
-            Permission::create(['name' => $permission]);
+            Permission::firstOrCreate(['name' => $permission]);
         }
 
-        $superAdmin = Role::create(['name' => 'super_admin']);
+        $superAdmin = Role::firstOrCreate(['name' => 'super_admin']);
         $superAdmin->givePermissionTo(Permission::all());
 
-        $instAdmin = Role::create(['name' => 'institution_admin']);
+        $instAdmin = Role::firstOrCreate(['name' => 'institution_admin']);
         $instAdmin->givePermissionTo([
             'institution.view', 'institution.update',
             'semester.create', 'semester.view', 'semester.update', 'semester.delete',
@@ -51,7 +51,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'grievance.view', 'grievance.manage',
         ]);
 
-        $teacher = Role::create(['name' => 'teacher']);
+        $teacher = Role::firstOrCreate(['name' => 'teacher']);
         $teacher->givePermissionTo([
             'subject.view',
             'discussion.create', 'discussion.view', 'discussion.update', 'discussion.delete',
@@ -62,7 +62,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'attendance.view', 'attendance.mark',
         ]);
 
-        $student = Role::create(['name' => 'student']);
+        $student = Role::firstOrCreate(['name' => 'student']);
         $student->givePermissionTo([
             'subject.view',
             'discussion.create', 'discussion.view',
