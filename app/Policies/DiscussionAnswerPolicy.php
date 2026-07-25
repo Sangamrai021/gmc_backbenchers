@@ -34,6 +34,17 @@ class DiscussionAnswerPolicy
             }
         }
 
+        if ($user->isTeacher()) {
+            $discussion = $answer->discussion;
+            $discussionable = $discussion->discussionable;
+            if ($discussionable instanceof \App\Models\Subject) {
+                return $user->taughtSubjects()->where('subject_id', $discussionable->id)->exists();
+            }
+            if ($discussionable instanceof \App\Models\Assignment) {
+                return $user->taughtSubjects()->where('subject_id', $discussionable->subject_id)->exists();
+            }
+        }
+
         return false;
     }
 }

@@ -122,6 +122,19 @@ class AssignmentController extends Controller
     {
         $this->authorize('update', $assignment);
 
+        $user = Auth::user();
+
+        // If subject_id is being changed, verify teacher is assigned to the new subject
+        if ($request->has('subject_id') && $request->subject_id != $assignment->subject_id && $user->isTeacher()) {
+            $isAssigned = $user->taughtSubjects()
+                ->where('subject_id', $request->subject_id)
+                ->exists();
+
+            if (!$isAssigned) {
+                abort(403, 'You are not assigned to this subject.');
+            }
+        }
+
         $assignment->update($request->validated());
 
         return redirect()->route('assignments.show', $assignment)

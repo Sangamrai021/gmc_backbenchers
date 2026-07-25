@@ -93,6 +93,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
         $subjects = \App\Models\Subject::whereIn('semester_id', $semesterIds)->with('semester.institution', 'teachers')->get();
         return Inertia::render('Student/MySubject', ['subjects' => $subjects]);
     })->name('student.subjects');
+
+    Route::get('/classes', function () {
+        $user = Auth::user();
+        if (!$user->isTeacher()) {
+            return redirect()->route('dashboard');
+        }
+        $subjects = $user->taughtSubjects()->with('semester.institution')->get();
+        return Inertia::render('Teacher/MyClasses', ['subjects' => $subjects]);
+    })->name('classes.index');
 });
 
 Route::middleware('auth')->prefix('questions')->name('questions.')->group(function () {

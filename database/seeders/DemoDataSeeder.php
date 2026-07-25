@@ -66,15 +66,30 @@ class DemoDataSeeder extends Seeder
             'invite_code' => 'BCA4KLM',
         ]);
 
+        $sem6 = Semester::create([
+            'institution_id' => $institution->id,
+            'name' => 'BCA 6th Semester',
+            'academic_year' => '2026',
+            'invite_code' => 'BCA6PQR',
+        ]);
+
         // Sections
         $sectionA = Section::create(['semester_id' => $sem3->id, 'name' => 'A']);
         $sectionB = Section::create(['semester_id' => $sem3->id, 'name' => 'B']);
+        $section6A = Section::create(['semester_id' => $sem6->id, 'name' => 'A']);
 
         // Subjects
         $java = Subject::create(['semester_id' => $sem3->id, 'name' => 'Java Programming', 'code' => 'BCA301']);
         $dl = Subject::create(['semester_id' => $sem3->id, 'name' => 'Digital Logic', 'code' => 'BCA302']);
         $dbms = Subject::create(['semester_id' => $sem4->id, 'name' => 'Database Management System', 'code' => 'BCA401']);
         $web = Subject::create(['semester_id' => $sem4->id, 'name' => 'Web Technology', 'code' => 'BCA402']);
+
+        // 6th Semester Subjects
+        $se = Subject::create(['semester_id' => $sem6->id, 'name' => 'Software Engineering', 'code' => 'BCA601']);
+        $oop = Subject::create(['semester_id' => $sem6->id, 'name' => 'Advance OOP', 'code' => 'BCA602']);
+        $ai = Subject::create(['semester_id' => $sem6->id, 'name' => 'AI', 'code' => 'BCA603']);
+        $rm = Subject::create(['semester_id' => $sem6->id, 'name' => 'Research Methodology', 'code' => 'BCA604']);
+        $cs = Subject::create(['semester_id' => $sem6->id, 'name' => 'Cyber Security', 'code' => 'BCA605']);
 
         // Teachers
         $teacherRam = User::create([
@@ -104,6 +119,13 @@ class DemoDataSeeder extends Seeder
         $dbms->teachers()->attach($teacherSita->id);
         $web->teachers()->attach($teacherRam->id);
 
+        // Assign 6th sem subjects to Sita Adhikari (and Ram for a few)
+        $se->teachers()->attach($teacherSita->id, ['section_id' => $section6A->id]);
+        $oop->teachers()->attach($teacherSita->id, ['section_id' => $section6A->id]);
+        $ai->teachers()->attach($teacherRam->id, ['section_id' => $section6A->id]);
+        $rm->teachers()->attach($teacherSita->id, ['section_id' => $section6A->id]);
+        $cs->teachers()->attach($teacherSita->id, ['section_id' => $section6A->id]);
+
         // Students
         $studentNames = [
             'Arun Gurung', 'Bina Rai', 'Chandra Thapa', 'Deepa Sharma', 'Ekaraj Limbu',
@@ -126,14 +148,20 @@ class DemoDataSeeder extends Seeder
         }
 
         // Enroll students in semesters (with sections)
-        foreach (array_slice($students, 0, 5) as $i => $student) {
+        foreach (array_slice($students, 0, 4) as $i => $student) {
             $sem3->students()->attach($student->id, [
-                'section_id' => $i < 3 ? $sectionA->id : $sectionB->id,
+                'section_id' => $i < 2 ? $sectionA->id : $sectionB->id,
                 'status' => 'active',
             ]);
         }
-        foreach (array_slice($students, 5) as $student) {
+        foreach (array_slice($students, 4, 3) as $student) {
             $sem4->students()->attach($student->id, ['status' => 'active']);
+        }
+        foreach (array_slice($students, 7) as $student) {
+            $sem6->students()->attach($student->id, [
+                'section_id' => $section6A->id,
+                'status' => 'active',
+            ]);
         }
 
         // Discussions

@@ -1,5 +1,6 @@
 import { Head, Link, useForm } from '@inertiajs/react';
 import { route } from 'ziggy-js';
+import SuperAdminLayout from '@/Layouts/SuperAdminLayout';
 
 export default function PendingComments({ comments }) {
   const { post } = useForm();
@@ -13,7 +14,7 @@ export default function PendingComments({ comments }) {
   }
 
   return (
-    <>
+    <SuperAdminLayout activeItem="Moderation">
       <Head title="Pending Comments" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-6">
@@ -47,6 +48,6 @@ export default function PendingComments({ comments }) {
           </table>
         </div>
       </div>
-    </>
+    </SuperAdminLayout>
   );
 }

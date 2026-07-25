@@ -1,8 +1,5 @@
 # Grievance.md — Student Grievance System for EduVoice
 
-> **Part of:** GMC Internal Hackathon 2026 | **Theme:** Empowering Education Through Technology
-> **Source:** Adapted from Nagarik Sarokar (Complaint Management System) at `/home/nitesh/complain_tracking`
-> **Tech Stack:** Laravel 12 + React 18 + Inertia.js + Tailwind CSS + Spatie Permission
 
 ---
 

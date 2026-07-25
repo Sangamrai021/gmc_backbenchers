@@ -47,6 +47,17 @@ class ResourceController extends Controller
         $this->authorize('create', Resource::class);
 
         $user = Auth::user();
+
+        // Verify teacher is assigned to this subject
+        if ($user->isTeacher()) {
+            $isAssigned = $user->taughtSubjects()
+                ->where('subject_id', $request->subject_id)
+                ->exists();
+
+            if (!$isAssigned) {
+                abort(403, 'You are not assigned to this subject.');
+            }
+        }
         
         $data = $request->validated();
         $data['teacher_id'] = $user->id;
@@ -76,6 +87,19 @@ class ResourceController extends Controller
     public function update(UpdateResourceRequest $request, Resource $resource)
     {
         $this->authorize('update', $resource);
+
+        $user = Auth::user();
+
+        // If subject_id is being changed, verify teacher is assigned to the new subject
+        if ($request->has('subject_id') && $request->subject_id != $resource->subject_id && $user->isTeacher()) {
+            $isAssigned = $user->taughtSubjects()
+                ->where('subject_id', $request->subject_id)
+                ->exists();
+
+            if (!$isAssigned) {
+                abort(403, 'You are not assigned to this subject.');
+            }
+        }
 
         $data = $request->validated();
 
