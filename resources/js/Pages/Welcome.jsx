@@ -98,8 +98,8 @@ export default function Welcome({ auth, canLogin, canRegister, laravelVersion, p
                     <div className="text-center max-w-4xl mx-auto">
                         {/* Pill Badge */}
                         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary-container border border-indigo-500/30 text-primary text-xs font-semibold uppercase tracking-wider mb-8 shadow-inner">
-                            <Sparkles className="size-3.5 text-primary animate-pulse" />
-                            <span>Empowering College Scholars & Innovators</span>
+                            <Sparkles className="size-6 text-primary animate-pulse" />
+                            <span className="tracking-wider font-[14px] text-black  ">Empowering College Scholars & Innovators</span>
                         </div>
 
                         {/* Main Title */}
