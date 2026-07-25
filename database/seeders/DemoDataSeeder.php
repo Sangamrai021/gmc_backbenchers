@@ -25,7 +25,7 @@ class DemoDataSeeder extends Seeder
         // Super Admin
         $superAdmin = User::create([
             'name' => 'Super Admin',
-            'email' => 'super@admin.com',
+            'email' => 'super@gmail.com',
             'password' => Hash::make('password'),
             'role' => 'super_admin',
             'anonymous_name' => AnonymousNameGenerator::generate(),
@@ -43,7 +43,7 @@ class DemoDataSeeder extends Seeder
         // Institution Admin
         $instAdmin = User::create([
             'name' => 'Admin Sharma',
-            'email' => 'admin@gomendra.edu',
+            'email' => 'admin@gmail.com',
             'password' => Hash::make('password'),
             'role' => 'institution_admin',
             'anonymous_name' => AnonymousNameGenerator::generate(),
@@ -94,7 +94,7 @@ class DemoDataSeeder extends Seeder
         // Teachers
         $teacherRam = User::create([
             'name' => 'Ram Pandey',
-            'email' => 'ram@gomendra.edu',
+            'email' => 'ram@gmail.com',
             'password' => Hash::make('password'),
             'role' => 'teacher',
             'anonymous_name' => AnonymousNameGenerator::generate(),
@@ -104,7 +104,7 @@ class DemoDataSeeder extends Seeder
 
         $teacherSita = User::create([
             'name' => 'Sita Adhikari',
-            'email' => 'sita@gomendra.edu',
+            'email' => 'sita@gmail.com',
             'password' => Hash::make('password'),
             'role' => 'teacher',
             'anonymous_name' => AnonymousNameGenerator::generate(),
@@ -128,8 +128,16 @@ class DemoDataSeeder extends Seeder
 
         // Students
         $studentNames = [
-            'Arun Gurung', 'Bina Rai', 'Chandra Thapa', 'Deepa Sharma', 'Ekaraj Limbu',
-            'Gita Mishra', 'Hari Poudel', 'Indira Basnet', 'Jeevan Khadka', 'Kabita Tamang',
+            'Arun Gurung',
+            'Bina Rai',
+            'Chandra Thapa',
+            'Deepa Sharma',
+            'Ekaraj Limbu',
+            'Gita Mishra',
+            'Hari Poudel',
+            'Indira Basnet',
+            'Jeevan Khadka',
+            'Kabita Tamang',
         ];
 
         $students = [];
