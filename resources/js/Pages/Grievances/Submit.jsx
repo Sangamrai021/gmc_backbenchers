@@ -18,7 +18,7 @@ export default function Submit({ institutions, categories, semesters, subjects, 
     priority: 'medium',
     title: '',
     description: '',
-    is_anonymous: !user,
+    is_anonymous: true,
     photo: null,
     video: null,
     website: '',
@@ -251,7 +251,10 @@ export default function Submit({ institutions, categories, semesters, subjects, 
 
               {user && (
                 <label className="flex items-center gap-4 cursor-pointer group border-t border-surface-container-low pt-6">
-                  <div className={`relative w-14 h-8 rounded-full transition-colors duration-300 ease-in-out ${data.is_anonymous ? 'bg-primary' : 'bg-surface-container-high'}`}>
+                  <div
+                    onClick={() => setData('is_anonymous', !data.is_anonymous)}
+                    className={`relative w-14 h-8 rounded-full transition-colors duration-300 ease-in-out ${data.is_anonymous ? 'bg-primary' : 'bg-surface-container-high'}`}
+                  >
                     <div className={`absolute top-1 left-1 w-6 h-6 bg-white rounded-full shadow-md transition-transform duration-300 ease-in-out flex items-center justify-center ${data.is_anonymous ? 'translate-x-6' : 'translate-x-0'}`}>
                       {data.is_anonymous && <span className="material-symbols-outlined text-[14px] text-primary">visibility_off</span>}
                     </div>
