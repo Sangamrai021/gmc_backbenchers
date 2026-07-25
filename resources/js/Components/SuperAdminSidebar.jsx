@@ -51,8 +51,12 @@ export default function SuperAdminSidebar({ activeItem = '' }) {
                     <span className="font-label-md text-label-md">Institutions</span>
                 </Link>
                 <Link
-                    href="#"
-                    className="flex items-center gap-4 px-4 py-2 rounded-lg text-on-surface-variant font-medium hover:bg-surface-container-high hover:text-on-surface transition-all"
+                    href={safeRoute('admin.institution_admins', '/admin/institution_admins')}
+                    className={`flex items-center gap-4 px-4 py-2 rounded-lg font-medium transition-all ${
+                        isActive('/admin/institution_admins') || activeItem === 'Institution Admins'
+                            ? 'text-primary font-bold bg-primary-container/10 border-r-4 border-primary opacity-80'
+                            : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
+                    }`}
                 >
                     <span className="material-symbols-outlined">admin_panel_settings</span>
                     <span className="font-label-md text-label-md">Institution Admins</span>
@@ -69,15 +73,23 @@ export default function SuperAdminSidebar({ activeItem = '' }) {
                     <span className="font-label-md text-label-md">Users Management</span>
                 </Link>
                 <Link
-                    href="#"
-                    className="flex items-center gap-4 px-4 py-2 rounded-lg text-on-surface-variant font-medium hover:bg-surface-container-high hover:text-on-surface transition-all"
+                    href={safeRoute('admin.analytics', '/admin/analytics')}
+                    className={`flex items-center gap-4 px-4 py-2 rounded-lg font-medium transition-all ${
+                        isActive('/admin/analytics') || activeItem === 'Platform Analytics'
+                            ? 'text-primary font-bold bg-primary-container/10 border-r-4 border-primary opacity-80'
+                            : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
+                    }`}
                 >
                     <span className="material-symbols-outlined">analytics</span>
                     <span className="font-label-md text-label-md">Platform Analytics</span>
                 </Link>
                 <Link
-                    href="#"
-                    className="flex items-center gap-4 px-4 py-2 rounded-lg text-on-surface-variant font-medium hover:bg-surface-container-high hover:text-on-surface transition-all"
+                    href={safeRoute('admin.monitoring', '/admin/monitoring')}
+                    className={`flex items-center gap-4 px-4 py-2 rounded-lg font-medium transition-all ${
+                        isActive('/admin/monitoring') || activeItem === 'System Monitoring'
+                            ? 'text-primary font-bold bg-primary-container/10 border-r-4 border-primary opacity-80'
+                            : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
+                    }`}
                 >
                     <span className="material-symbols-outlined">monitor_heart</span>
                     <span className="font-label-md text-label-md">System Monitoring</span>
@@ -94,22 +106,34 @@ export default function SuperAdminSidebar({ activeItem = '' }) {
                     <span className="font-label-md text-label-md">Security & Audit Logs</span>
                 </Link>
                 <Link
-                    href="#"
-                    className="flex items-center gap-4 px-4 py-2 rounded-lg text-on-surface-variant font-medium hover:bg-surface-container-high hover:text-on-surface transition-all"
+                    href={safeRoute('admin.roles', '/admin/roles')}
+                    className={`flex items-center gap-4 px-4 py-2 rounded-lg font-medium transition-all ${
+                        isActive('/admin/roles') || activeItem === 'Roles & Permissions'
+                            ? 'text-primary font-bold bg-primary-container/10 border-r-4 border-primary opacity-80'
+                            : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
+                    }`}
                 >
                     <span className="material-symbols-outlined">rule</span>
                     <span className="font-label-md text-label-md">Roles & Permissions</span>
                 </Link>
                 <Link
-                    href="#"
-                    className="flex items-center gap-4 px-4 py-2 rounded-lg text-on-surface-variant font-medium hover:bg-surface-container-high hover:text-on-surface transition-all"
+                    href={safeRoute('admin.reports', '/admin/reports')}
+                    className={`flex items-center gap-4 px-4 py-2 rounded-lg font-medium transition-all ${
+                        isActive('/admin/reports') || activeItem === 'Reports'
+                            ? 'text-primary font-bold bg-primary-container/10 border-r-4 border-primary opacity-80'
+                            : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
+                    }`}
                 >
                     <span className="material-symbols-outlined">description</span>
                     <span className="font-label-md text-label-md">Reports</span>
                 </Link>
                 <Link
-                    href="#"
-                    className="flex items-center gap-4 px-4 py-2 rounded-lg text-on-surface-variant font-medium hover:bg-surface-container-high hover:text-on-surface transition-all"
+                    href={safeRoute('announcements.index', '/announcements')}
+                    className={`flex items-center gap-4 px-4 py-2 rounded-lg font-medium transition-all ${
+                        isActive('/announcements') || activeItem === 'Announcements'
+                            ? 'text-primary font-bold bg-primary-container/10 border-r-4 border-primary opacity-80'
+                            : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
+                    }`}
                 >
                     <span className="material-symbols-outlined">campaign</span>
                     <span className="font-label-md text-label-md">Announcements</span>
