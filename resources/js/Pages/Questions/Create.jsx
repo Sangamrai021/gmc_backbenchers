@@ -19,111 +19,126 @@ export default function Create({ subjects }) {
     };
 
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">Ask a Question</h2>
-            }
-        >
+        <AuthenticatedLayout header="Ask a Question">
             <Head title="Ask a Question" />
 
-            <div className="py-12">
-                <div className="mx-auto max-w-3xl sm:px-6 lg:px-8">
-                    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                        <form onSubmit={handleSubmit} className="space-y-6">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Subject</label>
-                                <select
-                                    value={form.discussionable_id}
-                                    onChange={(e) => setForm({ ...form, discussionable_id: e.target.value })}
-                                    className="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                    required
-                                >
-                                    {subjects.map((subject) => (
-                                        <option key={subject.id} value={subject.id}>
-                                            {subject.name} ({subject.semester?.name})
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
+            <div className="max-w-3xl mx-auto pb-12 mt-4 space-y-6">
+                
+                {/* Header Section */}
+                <div className="bg-gradient-to-r from-primary to-primary/80 rounded-3xl p-8 text-white shadow-lg relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 rounded-full blur-2xl -mt-10 -mr-10 mix-blend-overlay"></div>
+                    <div className="relative z-10">
+                        <h2 className="text-3xl font-bold mb-2">Ask the Community 💡</h2>
+                        <p className="text-primary-50 text-lg font-medium">Stuck on a problem? Ask clearly and get help from peers or teachers.</p>
+                    </div>
+                </div>
 
+                <div className="bg-white/80 backdrop-blur-md rounded-3xl border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-8">
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        <div className="grid md:grid-cols-2 gap-6">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                                <select
-                                    value={form.category}
-                                    onChange={(e) => setForm({ ...form, category: e.target.value })}
-                                    className="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                >
-                                    <option value="">Select category (optional)</option>
-                                    <option value="conceptual">Conceptual Problem</option>
-                                    <option value="assignment">Assignment Problem</option>
-                                    <option value="exam">Exam Preparation</option>
-                                    <option value="career">Career Question</option>
-                                    <option value="technical">Technical Issue</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Title</label>
-                                <input
-                                    type="text"
-                                    value={form.title}
-                                    onChange={(e) => setForm({ ...form, title: e.target.value })}
-                                    className="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                    placeholder="Summarize your question in one line"
-                                    required
-                                    maxLength={255}
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Details</label>
-                                <textarea
-                                    value={form.body}
-                                    onChange={(e) => setForm({ ...form, body: e.target.value })}
-                                    className="w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
-                                    rows={6}
-                                    placeholder="Explain your question in detail. Include what you've tried and what you're stuck on."
-                                    required
-                                />
-                            </div>
-
-                            <div className="flex items-center justify-between pt-4 border-t">
-                                <label className="flex items-center gap-3 cursor-pointer">
-                                    <div
-                                        onClick={() => setForm({ ...form, is_anonymous: !form.is_anonymous })}
-                                        className={`relative w-11 h-6 rounded-full transition-colors ${
-                                            form.is_anonymous ? 'bg-indigo-600' : 'bg-gray-300'
-                                        }`}
+                                <label className="block text-sm font-bold text-on-surface mb-2 uppercase tracking-wide">Subject</label>
+                                <div className="relative">
+                                    <select
+                                        value={form.discussionable_id}
+                                        onChange={(e) => setForm({ ...form, discussionable_id: e.target.value })}
+                                        className="w-full bg-surface-container-lowest border border-surface-container-low text-on-surface rounded-xl px-4 py-3 appearance-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-medium"
+                                        required
                                     >
-                                        <div
-                                            className={`absolute top-0.5 left-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${
-                                                form.is_anonymous ? 'translate-x-5' : 'translate-x-0'
-                                            }`}
-                                        />
-                                    </div>
-                                    <div>
-                                        <span className="text-sm font-medium text-gray-700">Post anonymously</span>
-                                        <p className="text-xs text-gray-500">Your name will be hidden. Only admins can see who posted.</p>
-                                    </div>
-                                </label>
-
-                                <div className="flex gap-3">
-                                    <Link
-                                        href={route('questions.index')}
-                                        className="px-4 py-2 text-sm bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200"
-                                    >
-                                        Cancel
-                                    </Link>
-                                    <button
-                                        type="submit"
-                                        className="px-6 py-2 text-sm bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
-                                    >
-                                        Post Question
-                                    </button>
+                                        {subjects.map((subject) => (
+                                            <option key={subject.id} value={subject.id}>
+                                                {subject.name} ({subject.semester?.name})
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <span className="material-symbols-outlined absolute right-4 top-3.5 text-outline pointer-events-none">expand_more</span>
                                 </div>
                             </div>
-                        </form>
-                    </div>
+
+                            <div>
+                                <label className="block text-sm font-bold text-on-surface mb-2 uppercase tracking-wide">Category <span className="text-outline font-normal">(Optional)</span></label>
+                                <div className="relative">
+                                    <select
+                                        value={form.category}
+                                        onChange={(e) => setForm({ ...form, category: e.target.value })}
+                                        className="w-full bg-surface-container-lowest border border-surface-container-low text-on-surface rounded-xl px-4 py-3 appearance-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-medium"
+                                    >
+                                        <option value="">Select category...</option>
+                                        <option value="conceptual">Conceptual Problem</option>
+                                        <option value="assignment">Assignment Problem</option>
+                                        <option value="exam">Exam Preparation</option>
+                                        <option value="career">Career Question</option>
+                                        <option value="technical">Technical Issue</option>
+                                    </select>
+                                    <span className="material-symbols-outlined absolute right-4 top-3.5 text-outline pointer-events-none">expand_more</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-bold text-on-surface mb-2 uppercase tracking-wide">Question Title</label>
+                            <input
+                                type="text"
+                                value={form.title}
+                                onChange={(e) => setForm({ ...form, title: e.target.value })}
+                                className="w-full bg-surface-container-lowest border border-surface-container-low text-on-surface rounded-xl px-4 py-3 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-medium placeholder:text-outline"
+                                placeholder="e.g. How does recursion work in Java?"
+                                required
+                                maxLength={255}
+                            />
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-bold text-on-surface mb-2 uppercase tracking-wide">Details & Context</label>
+                            <textarea
+                                value={form.body}
+                                onChange={(e) => setForm({ ...form, body: e.target.value })}
+                                className="w-full bg-surface-container-lowest border border-surface-container-low text-on-surface rounded-xl px-4 py-3 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-medium placeholder:text-outline resize-y"
+                                rows={6}
+                                placeholder="Explain your doubt in detail. What have you tried? Where are you stuck?"
+                                required
+                            />
+                        </div>
+
+                        <div className="flex flex-col md:flex-row items-center justify-between pt-6 border-t border-surface-container-low gap-6">
+                            <label className="flex items-center gap-4 cursor-pointer group">
+                                <div
+                                    onClick={() => setForm({ ...form, is_anonymous: !form.is_anonymous })}
+                                    className={`relative w-14 h-8 rounded-full transition-colors duration-300 ease-in-out ${
+                                        form.is_anonymous ? 'bg-primary' : 'bg-surface-container-high'
+                                    }`}
+                                >
+                                    <div
+                                        className={`absolute top-1 left-1 w-6 h-6 bg-white rounded-full shadow-md transition-transform duration-300 ease-in-out flex items-center justify-center ${
+                                            form.is_anonymous ? 'translate-x-6' : 'translate-x-0'
+                                        }`}
+                                    >
+                                        {form.is_anonymous && <span className="material-symbols-outlined text-[14px] text-primary">visibility_off</span>}
+                                    </div>
+                                </div>
+                                <div>
+                                    <span className="text-sm font-bold text-on-surface">Ask Anonymously</span>
+                                    <p className="text-xs text-on-surface-variant mt-0.5 font-medium">Your identity is hidden from peers.</p>
+                                </div>
+                            </label>
+
+                            <div className="flex gap-4 w-full md:w-auto">
+                                <Link
+                                    href={route('questions.index')}
+                                    className="px-6 py-3 text-sm font-bold bg-surface-container-low text-on-surface-variant rounded-xl hover:bg-surface-container hover:text-on-surface transition-colors flex-1 text-center"
+                                >
+                                    Cancel
+                                </Link>
+                                <button
+                                    type="submit"
+                                    className="px-8 py-3 text-sm font-bold bg-primary text-white rounded-xl hover:bg-primary/90 hover:shadow-lg hover:-translate-y-0.5 transition-all flex-1 md:flex-none flex items-center justify-center gap-2"
+                                >
+                                    <span className="material-symbols-outlined text-[18px]">send</span>
+                                    Post Question
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </AuthenticatedLayout>

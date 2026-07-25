@@ -5,48 +5,54 @@ import { StatusBadge, PriorityBadge } from '../UI/Badge';
 export default function ComplaintCard({ grievance }) {
   return (
     <Link href={route('grievances.show-reference', grievance.reference_code)}
-      className="block bg-white rounded-xl border border-gray-200/60 p-4 hover:shadow-md hover:border-gray-300 transition-all group">
-      <div className="flex items-start justify-between gap-2 mb-2">
-        <span className="font-mono text-[10px] text-gray-400">{grievance.reference_code}</span>
-        <div className="flex items-center gap-1 shrink-0">
+      className="block bg-white/80 backdrop-blur-md rounded-2xl border border-white shadow-[0_4px_20px_rgb(0,0,0,0.03)] p-6 hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:-translate-y-1 transition-all duration-300 group">
+      
+      <div className="flex items-start justify-between gap-4 mb-4">
+        <div className="flex flex-col gap-1.5">
+          <span className="font-mono text-xs font-bold text-outline tracking-wider bg-surface-container-low px-2 py-0.5 rounded-md inline-block w-max">
+            #{grievance.reference_code}
+          </span>
+          <StatusBadge status={grievance.status} />
+        </div>
+        <div className="shrink-0">
           <PriorityBadge priority={grievance.priority} />
         </div>
       </div>
 
-      <h3 className="text-sm font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors line-clamp-1">
+      <h3 className="text-lg font-bold text-on-surface group-hover:text-primary transition-colors line-clamp-1 mb-2 leading-tight">
         {grievance.title}
       </h3>
 
-      <p className="text-xs text-gray-500 mt-1 line-clamp-2">
+      <p className="text-sm text-on-surface-variant font-medium line-clamp-2 mb-4 leading-relaxed">
         {grievance.description}
       </p>
 
       {grievance.institution && (
-        <p className="text-[10px] text-gray-400 mt-2">{grievance.institution}</p>
+        <div className="flex items-center gap-1.5 text-xs font-bold text-outline uppercase tracking-wider mb-4 bg-surface-container-lowest p-2 rounded-lg border border-surface-container-low">
+            <span className="material-symbols-outlined text-[14px]">account_balance</span>
+            <span className="truncate">{grievance.institution}</span>
+        </div>
       )}
 
-      <div className="flex items-center gap-3 mt-3 pt-2 border-t border-gray-100">
-        <StatusBadge status={grievance.status} />
+      <div className="flex items-center justify-between mt-auto pt-4 border-t border-surface-container-low">
+        
+        {grievance.social_proof ? (
+            <p className="text-xs font-medium text-primary italic max-w-[60%] truncate">"{grievance.social_proof}"</p>
+        ) : (
+            <p className="text-xs font-medium text-outline">No updates yet</p>
+        )}
 
-        <div className="flex items-center gap-3 ml-auto text-xs text-gray-400">
-          <span className="flex items-center gap-1">
-            <svg className="w-3.5 h-3.5 text-red-400" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-            </svg>
+        <div className="flex items-center gap-3 shrink-0 text-xs font-bold text-on-surface-variant">
+          <span className="flex items-center gap-1 bg-surface-container-lowest px-2 py-1 rounded-md border border-surface-container-low">
+            <span className="material-symbols-outlined text-[14px] text-error">keyboard_double_arrow_up</span>
             {grievance.upvotes_count || 0}
           </span>
-          <span className="flex items-center gap-1">
-            <svg className="w-3.5 h-3.5 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-            </svg>
+          <span className="flex items-center gap-1 bg-surface-container-lowest px-2 py-1 rounded-md border border-surface-container-low">
+            <span className="material-symbols-outlined text-[14px] text-blue-500">forum</span>
             {grievance.comments_count || 0}
           </span>
         </div>
       </div>
-
-      {grievance.social_proof && (
-        <p className="text-[10px] text-gray-400 mt-2 italic">{grievance.social_proof}</p>
-      )}
     </Link>
   );
 }

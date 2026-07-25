@@ -2,6 +2,7 @@ import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 import { useLanguage } from '../../Context/LanguageContext';
 import { useState } from 'react';
+import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 export default function Submit({ institutions, categories, semesters, subjects, priorities }) {
   const { t, lang } = useLanguage();
@@ -158,71 +159,119 @@ export default function Submit({ institutions, categories, semesters, subjects, 
           )}
 
           {step === 1 && (
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200/60 p-5 sm:p-7 space-y-4">
+            <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('submit.desc_label')}</label>
-                <textarea value={data.description} onChange={e => setData('description', e.target.value)} rows={6}
-                  placeholder={t('submit.desc_placeholder')}
-                  className="w-full rounded-lg border-gray-300 border px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none" />
-                <p className="text-xs text-gray-400 mt-1">{data.description.length}/5000</p>
+                <label className="block text-sm font-bold text-on-surface mb-2 uppercase tracking-wide">
+                  {t('submit.description')} <span className="text-red-500">*</span>
+                </label>
+                <textarea
+                  value={data.description}
+                  onChange={e => setData('description', e.target.value)}
+                  rows="6"
+                  className="w-full bg-surface-container-lowest border border-surface-container-low text-on-surface rounded-xl px-4 py-3 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-medium resize-y"
+                  placeholder={t('submit.description_placeholder')}
+                  required
+                />
+                <p className="mt-2 text-xs font-bold text-outline uppercase tracking-wider">{data.description.length} / 10 {t('submit.min_chars')}</p>
+                {errors.description && <p className="mt-1 text-sm text-red-600">{errors.description}</p>}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('submit.photo_label')}</label>
-                <input type="file" accept="image/*" onChange={handlePhotoChange}
-                  className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" />
+                <label className="block text-sm font-bold text-on-surface mb-2 uppercase tracking-wide">{t('submit.evidence.label')}</label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="border-2 border-dashed border-surface-container-low rounded-xl p-6 text-center hover:bg-surface-container-lowest transition-colors group cursor-pointer relative overflow-hidden">
+                    <input type="file" accept="image/*" onChange={handlePhotoChange} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
+                    <span className="material-symbols-outlined text-4xl text-outline group-hover:text-primary transition-colors mb-2">add_photo_alternate</span>
+                    <p className="text-sm font-bold text-on-surface-variant group-hover:text-primary transition-colors">{t('submit.evidence.photo')}</p>
+                    {data.photo && <p className="text-xs text-primary font-bold mt-2 truncate">{data.photo.name}</p>}
+                  </div>
+                  <div className="border-2 border-dashed border-surface-container-low rounded-xl p-6 text-center hover:bg-surface-container-lowest transition-colors group cursor-pointer relative overflow-hidden">
+                    <input type="file" accept="video/*" onChange={handleVideoChange} className="absolute inset-0 opacity-0 cursor-pointer z-10" />
+                    <span className="material-symbols-outlined text-4xl text-outline group-hover:text-primary transition-colors mb-2">video_file</span>
+                    <p className="text-sm font-bold text-on-surface-variant group-hover:text-primary transition-colors">{t('submit.evidence.video')}</p>
+                    {data.video && <p className="text-xs text-primary font-bold mt-2 truncate">{data.video.name}</p>}
+                  </div>
+                </div>
+                {errors.photo && <p className="mt-1 text-sm text-red-600">{errors.photo}</p>}
+                {errors.video && <p className="mt-1 text-sm text-red-600">{errors.video}</p>}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('submit.video_label')}</label>
-                <input type="file" accept="video/*" onChange={handleVideoChange}
-                  className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" />
+                <label className="block text-sm font-bold text-on-surface mb-2 uppercase tracking-wide">{t('submit.website')}</label>
+                <input
+                  type="url"
+                  value={data.website}
+                  onChange={e => setData('website', e.target.value)}
+                  className="w-full bg-surface-container-lowest border border-surface-container-low text-on-surface rounded-xl px-4 py-3 focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all font-medium"
+                  placeholder="https://"
+                />
+                {errors.website && <p className="mt-1 text-sm text-red-600">{errors.website}</p>}
               </div>
 
               {!user && (
-                <label className="flex items-center gap-2">
-                  <input type="checkbox" checked={data.is_anonymous} onChange={e => setData('is_anonymous', e.target.checked)}
-                    className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
-                  <span className="text-sm text-gray-700">{t('submit.anonymous_label')}</span>
+                <div className="bg-surface-container-lowest rounded-xl p-4 border border-surface-container-low flex items-start gap-3">
+                  <span className="material-symbols-outlined text-primary shrink-0 mt-0.5">info</span>
+                  <p className="text-sm text-on-surface-variant font-medium">{t('submit.anonymous_note')}</p>
+                </div>
+              )}
+
+              {user && (
+                <label className="flex items-center gap-4 cursor-pointer group border-t border-surface-container-low pt-6">
+                  <div className={`relative w-14 h-8 rounded-full transition-colors duration-300 ease-in-out ${data.is_anonymous ? 'bg-primary' : 'bg-surface-container-high'}`}>
+                    <div className={`absolute top-1 left-1 w-6 h-6 bg-white rounded-full shadow-md transition-transform duration-300 ease-in-out flex items-center justify-center ${data.is_anonymous ? 'translate-x-6' : 'translate-x-0'}`}>
+                      {data.is_anonymous && <span className="material-symbols-outlined text-[14px] text-primary">visibility_off</span>}
+                    </div>
+                  </div>
+                  <div>
+                    <span className="text-sm font-bold text-on-surface">{t('submit.anonymous')}</span>
+                    <p className="text-xs text-on-surface-variant mt-0.5 font-medium">Your identity is hidden from peers.</p>
+                  </div>
                 </label>
               )}
             </div>
           )}
 
           {step === 2 && (
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200/60 p-5 sm:p-7 space-y-3">
-              <h3 className="text-sm font-semibold text-gray-900">Review Summary</h3>
-              <div className="bg-gray-50 rounded-xl p-4 space-y-2 text-sm">
-                <p><span className="text-gray-500">Title:</span> <span className="font-medium">{data.title}</span></p>
-                <p><span className="text-gray-500">Priority:</span> <span className="font-medium">{priorities[data.priority]}</span></p>
-                <p><span className="text-gray-500">Description:</span> <span className="font-medium">{data.description.substring(0, 100)}...</span></p>
-                <p><span className="text-gray-500">Anonymous:</span> <span className="font-medium">{data.is_anonymous ? 'Yes' : 'No'}</span></p>
+            <div className="space-y-6">
+              <h3 className="text-lg font-bold text-on-surface border-b border-surface-container-low pb-2">Review Summary</h3>
+              <div className="bg-surface-container-lowest rounded-2xl p-6 space-y-4 border border-surface-container-low">
+                <div><span className="text-xs font-bold text-outline uppercase tracking-wider block mb-1">Title</span> <span className="font-bold text-on-surface text-lg">{data.title}</span></div>
+                <div><span className="text-xs font-bold text-outline uppercase tracking-wider block mb-1">Priority</span> <span className="font-bold text-primary">{priorities[data.priority]}</span></div>
+                <div><span className="text-xs font-bold text-outline uppercase tracking-wider block mb-1">Description</span> <span className="font-medium text-on-surface-variant leading-relaxed">{data.description}</span></div>
+                <div><span className="text-xs font-bold text-outline uppercase tracking-wider block mb-1">Anonymous Mode</span> <span className="font-bold text-on-surface">{data.is_anonymous ? 'Yes' : 'No'}</span></div>
               </div>
             </div>
           )}
 
-          <div className="flex items-center justify-between mt-6">
+          <div className="flex items-center justify-between mt-8 pt-6 border-t border-surface-container-low">
             {step > 0 ? (
               <button type="button" onClick={() => setStep(step - 1)}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50">
+                className="px-6 py-3 text-sm font-bold bg-surface-container-low text-on-surface-variant rounded-xl hover:bg-surface-container transition-colors">
                 Back
               </button>
             ) : <div />}
 
             {step < 2 ? (
               <button type="button" onClick={() => canProceed() && setStep(step + 1)} disabled={!canProceed()}
-                className="px-6 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed">
-                Next
+                className="px-8 py-3 text-sm font-bold bg-primary text-white rounded-xl hover:bg-primary/90 hover:-translate-y-0.5 shadow-md transition-all disabled:opacity-50 disabled:hover:translate-y-0 disabled:shadow-none">
+                Next Step
               </button>
             ) : (
               <button type="submit" disabled={processing}
-                className="px-6 py-2 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 disabled:opacity-50">
+                className="px-8 py-3 text-sm font-bold bg-primary text-white rounded-xl hover:bg-primary/90 hover:-translate-y-0.5 shadow-md transition-all flex items-center gap-2 disabled:opacity-50 disabled:hover:translate-y-0 disabled:shadow-none">
+                <span className="material-symbols-outlined text-[18px]">send</span>
                 {processing ? t('submit.submitting') : t('submit.submit_btn')}
               </button>
             )}
           </div>
         </form>
       </div>
-    </>
+    </div>
   );
+
+  if (user) {
+      return <AuthenticatedLayout header={t('submit.title')}>{content}</AuthenticatedLayout>;
+  }
+
+  return content;
 }
