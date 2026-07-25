@@ -66,30 +66,30 @@ export default function Index({ discussions, filters, subjects }) {
             </div>
 
             {/* Premium Header */}
-            <div className="bg-gradient-to-br from-indigo-900 via-blue-900 to-blue-950 -mt-6 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-8 sm:py-12 mb-8 shadow-inner">
-                <div className="max-w-7xl mx-auto">
+            <div className="bg-white border-b border-gray-200 -mt-6 -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-8 mb-8">
+                <div className="max-w-5xl mx-auto">
                     <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                         <div>
-                            <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight">
+                            <h1 className="text-2xl font-bold text-gray-900 tracking-tight">
                                 Anonymous Q&A
                             </h1>
-                            <p className="text-sm sm:text-base text-blue-200/80 mt-1 max-w-xl">
+                            <p className="text-sm text-gray-500 mt-1 max-w-xl">
                                 Explore doubts, share knowledge, and help students learn without the fear of judgement.
                             </p>
                         </div>
                         <div className="hidden md:flex items-center gap-3">
                             <button
                                 onClick={() => setTrackOpen(true)}
-                                className="inline-flex items-center gap-2 px-5 py-2.5 bg-white/10 text-white text-sm font-bold rounded-xl hover:bg-white/20 transition-all border border-white/20 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+                                className="inline-flex items-center gap-2 px-4 py-2 bg-white text-gray-700 text-sm font-medium rounded-md border border-gray-300 hover:bg-gray-50 transition-all shadow-sm"
                             >
-                                <span className="material-symbols-outlined text-[20px]">search</span>
+                                <span className="material-symbols-outlined text-[18px] text-gray-400">search</span>
                                 Track Question
                             </button>
                             <button
                                 onClick={() => setAskOpen(true)}
-                                className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-indigo-900 text-sm font-bold rounded-xl hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl hover:-translate-y-0.5"
+                                className="inline-flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-md hover:bg-indigo-700 transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                             >
-                                <span className="material-symbols-outlined text-[20px]">edit_square</span>
+                                <span className="material-symbols-outlined text-[18px]">edit_square</span>
                                 Ask a Question
                             </button>
                         </div>

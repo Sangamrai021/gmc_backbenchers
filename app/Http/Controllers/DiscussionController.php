@@ -156,7 +156,7 @@ class DiscussionController extends Controller
 
         event(new QuestionPosted($discussion));
 
-        return redirect()->back()
+        return redirect()->route('questions.index')
             ->with('success', 'Your question has been posted.')
             ->with('tracking_token', $trackingToken);
     }

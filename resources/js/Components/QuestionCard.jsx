@@ -1,5 +1,4 @@
 import { Link } from '@inertiajs/react';
-import VoteButtons from '@/Components/VoteButtons';
 
 export default function QuestionCard({ discussion }) {
     const statusConfig = {
@@ -11,17 +10,8 @@ export default function QuestionCard({ discussion }) {
     const currentStatus = statusConfig[discussion.status] || statusConfig.open;
 
     return (
-        <div className="bg-white/80 backdrop-blur-md rounded-2xl border border-white shadow-[0_4px_20px_rgb(0,0,0,0.03)] p-5 hover:shadow-[0_8px_30px_rgb(0,0,0,0.06)] hover:-translate-y-0.5 transition-all duration-300 group">
-            <div className="flex flex-col sm:flex-row gap-5">
-                {/* Voting Section */}
-                <div className="shrink-0 flex sm:flex-col items-center sm:items-start gap-2">
-                    <VoteButtons
-                        votableType="discussion"
-                        votableId={discussion.id}
-                        upvotes={discussion.upvotes_count}
-                        downvotes={discussion.downvotes_count}
-                    />
-                </div>
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-5 hover:border-indigo-300 hover:shadow-md transition-all duration-300 group">
+            <div className="flex flex-col gap-3">
 
                 {/* Content Section */}
                 <div className="flex-1 min-w-0">
@@ -48,20 +38,25 @@ export default function QuestionCard({ discussion }) {
                         {discussion.body}
                     </p>
 
-                    <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-xs font-medium text-on-surface-variant">
-                        <div className="flex items-center gap-1.5">
-                            <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center text-primary text-[10px] font-bold">
+                    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs font-medium text-gray-500 mt-2">
+                        <div className="flex items-center gap-1.5 mr-2">
+                            <div className="w-5 h-5 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-700 text-[10px] font-bold">
                                 {discussion.author_name?.charAt(0) || 'U'}
                             </div>
-                            <span className="text-on-surface font-semibold">{discussion.author_name}</span>
+                            <span className="text-gray-900 font-semibold">{discussion.author_name}</span>
+                        </div>
+
+                        <div className="flex items-center gap-1 bg-gray-50 px-2 py-1 rounded-md border border-gray-100 text-gray-600">
+                            <span className="material-symbols-outlined text-[14px]">arrow_upward</span>
+                            <span className="font-bold">{discussion.upvotes_count - discussion.downvotes_count} votes</span>
                         </div>
                         
-                        <div className="flex items-center gap-1.5 text-outline">
+                        <div className="flex items-center gap-1">
                             <span className="material-symbols-outlined text-[14px]">forum</span>
                             <span>{discussion.answers_count} {discussion.answers_count === 1 ? 'answer' : 'answers'}</span>
                         </div>
                         
-                        <div className="flex items-center gap-1.5 text-outline">
+                        <div className="flex items-center gap-1">
                             <span className="material-symbols-outlined text-[14px]">schedule</span>
                             <span>{new Date(discussion.created_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                         </div>
