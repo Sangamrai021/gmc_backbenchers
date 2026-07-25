@@ -91,6 +91,19 @@ export default function TeacherSidebar() {
                     </li>
                     <li>
                         <Link
+                            href={route('grievances.feed')}
+                            className={`flex items-center gap-4 px-4 py-2 rounded-lg font-medium transition-all ${
+                                isActive('/grievances')
+                                    ? 'text-primary font-bold bg-primary-container/10 border-r-4 border-primary'
+                                    : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
+                            }`}
+                        >
+                            <span className="material-symbols-outlined">report</span>
+                            <span className="font-label-md text-label-md">Grievances</span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link
                             href="#"
                             className="flex items-center gap-4 px-4 py-2 rounded-lg text-on-surface-variant font-medium hover:bg-surface-container-high hover:text-on-surface transition-all"
                         >

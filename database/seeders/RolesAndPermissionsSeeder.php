@@ -24,6 +24,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'announcement.create', 'announcement.view',
             'attendance.view', 'attendance.mark',
             'user.manage',
+            'grievance.create', 'grievance.view', 'grievance.update', 'grievance.delete',
+            'grievance.manage', 'grievance.moderate',
         ];
 
         foreach ($permissions as $permission) {
@@ -46,6 +48,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'announcement.create', 'announcement.view',
             'attendance.view', 'attendance.mark',
             'user.manage',
+            'grievance.view', 'grievance.manage',
         ]);
 
         $teacher = Role::create(['name' => 'teacher']);
@@ -67,6 +70,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'resource.view',
             'announcement.view',
             'attendance.view',
+            'grievance.create', 'grievance.view',
         ]);
     }
 }

@@ -99,6 +99,28 @@ export default function InstitutionAdminSidebar({ activeItem = '' }) {
                     Resources
                 </Link>
                 <Link
+                    href={safeRoute('admin.grievances.index', '/admin/grievances')}
+                    className={`flex items-center gap-4 px-4 py-2 transition-colors duration-200 ease-in-out font-body-sm text-body-sm ${
+                        isActive('/admin/grievances') || activeItem === 'Grievances'
+                            ? 'text-primary font-bold border-r-4 border-primary'
+                            : 'text-on-surface-variant hover:bg-surface-container-low'
+                    }`}
+                >
+                    <span className="material-symbols-outlined">report</span>
+                    Grievances
+                </Link>
+                <Link
+                    href={safeRoute('admin.moderation', '/admin/moderation')}
+                    className={`flex items-center gap-4 px-4 py-2 transition-colors duration-200 ease-in-out font-body-sm text-body-sm ${
+                        isActive('/admin/moderation') || activeItem === 'Moderation'
+                            ? 'text-primary font-bold border-r-4 border-primary'
+                            : 'text-on-surface-variant hover:bg-surface-container-low'
+                    }`}
+                >
+                    <span className="material-symbols-outlined">gavel</span>
+                    Moderation
+                </Link>
+                <Link
                     href={safeRoute('questions.index', '/questions')}
                     className={`flex items-center gap-4 px-4 py-2 transition-colors duration-200 ease-in-out font-body-sm text-body-sm ${
                         isActive('/questions') || activeItem === 'Questions'

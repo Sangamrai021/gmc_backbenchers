@@ -9,7 +9,10 @@ use App\Models\Section;
 use App\Models\Semester;
 use App\Models\Subject;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
@@ -54,7 +57,14 @@ class AppServiceProvider extends ServiceProvider
             'section' => Section::class,
             'discussion' => Discussion::class,
             'discussion_answer' => DiscussionAnswer::class,
+            'grievance' => \App\Models\Grievance::class,
         ]);
+
+        RateLimiter::for('grievances:submit', fn(Request $request) => Limit::perMinute(3)->by($request->ip()));
+        RateLimiter::for('grievances:status', fn(Request $request) => Limit::perMinute(10)->by($request->ip()));
+        RateLimiter::for('grievances:feedback', fn(Request $request) => Limit::perMinute(5)->by($request->ip()));
+        RateLimiter::for('grievances:comments', fn(Request $request) => Limit::perMinute(10)->by($request->ip()));
+        RateLimiter::for('grievances:feed', fn(Request $request) => Limit::perMinute(60)->by($request->ip()));
 
         Event::listen(AssignmentCreated::class, NotifyAssignmentCreated::class);
         Event::listen(AssignmentGraded::class, NotifyAssignmentGraded::class);

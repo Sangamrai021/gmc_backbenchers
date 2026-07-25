@@ -152,3 +152,39 @@ Route::resource('resources', \App\Http\Controllers\ResourceController::class)->m
 Route::resource('announcements', \App\Http\Controllers\AnnouncementController::class)->middleware(['auth', 'verified']);
 
 require __DIR__ . '/auth.php';
+
+// Grievance System Routes
+Route::get('/grievances/submit', [\App\Http\Controllers\GrievanceController::class, 'create'])->name('grievances.create');
+Route::post('/grievances', [\App\Http\Controllers\GrievanceController::class, 'store'])->name('grievances.store')->middleware('throttle:grievances:submit');
+Route::get('/grievances/feed', [\App\Http\Controllers\GrievanceFeedController::class, 'index'])->name('grievances.feed');
+Route::get('/grievances/track', [\App\Http\Controllers\GrievanceController::class, 'trackStatus'])->name('grievances.track')->middleware('throttle:grievances:status');
+Route::get('/grievances/r/{reference_code}', [\App\Http\Controllers\GrievanceController::class, 'showReference'])->name('grievances.show-reference');
+
+Route::post('/grievances/{grievance}/upvote', [\App\Http\Controllers\UpvoteController::class, 'toggle'])->name('grievances.upvote');
+Route::get('/grievances/{grievance}/upvoters', [\App\Http\Controllers\UpvoteController::class, 'upvoters'])->name('grievances.upvoters');
+Route::get('/grievances/{grievance}/comments', [\App\Http\Controllers\CommentController::class, 'index'])->name('grievances.comments.index')->middleware('throttle:grievances:feed');
+Route::post('/grievances/{grievance}/comments', [\App\Http\Controllers\CommentController::class, 'store'])->name('grievances.comments.store')->middleware('throttle:grievances:comments');
+Route::delete('/comments/{comment}', [\App\Http\Controllers\CommentController::class, 'destroy'])->name('grievances.comments.destroy');
+
+Route::post('/grievances/{grievance}/flag', [\App\Http\Controllers\FlagController::class, 'flagGrievance'])->name('grievances.flag');
+Route::post('/comments/{comment}/flag', [\App\Http\Controllers\FlagController::class, 'flagComment'])->name('comments.flag');
+
+Route::get('/api/grievances/stats/overview', [\App\Http\Controllers\StatsController::class, 'overview']);
+Route::get('/api/grievances/stats/categories', [\App\Http\Controllers\StatsController::class, 'categoryBreakdown']);
+Route::get('/api/grievances/stats/trends', [\App\Http\Controllers\StatsController::class, 'issuesOverTime']);
+
+Route::middleware(['auth', 'role:super_admin|institution_admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/grievances', [\App\Http\Controllers\Admin\GrievanceController::class, 'index'])->name('grievances.index');
+    Route::get('/grievances/{grievance}', [\App\Http\Controllers\Admin\GrievanceController::class, 'show'])->name('grievances.show');
+    Route::patch('/grievances/{grievance}/status', [\App\Http\Controllers\Admin\GrievanceController::class, 'updateStatus'])->name('grievances.update-status');
+    Route::post('/grievances/{grievance}/priority', [\App\Http\Controllers\Admin\GrievanceController::class, 'updatePriority'])->name('grievances.update-priority');
+    Route::post('/grievances/{grievance}/assign', [\App\Http\Controllers\Admin\GrievanceController::class, 'assign'])->name('grievances.assign');
+
+    Route::get('/moderation', [\App\Http\Controllers\Admin\ModerationController::class, 'index'])->name('moderation');
+    Route::post('/moderation/{grievance}/hide', [\App\Http\Controllers\Admin\ModerationController::class, 'hide'])->name('moderation.hide');
+    Route::post('/moderation/{grievance}/dismiss', [\App\Http\Controllers\Admin\ModerationController::class, 'dismiss'])->name('moderation.dismiss');
+    Route::get('/moderation/comments', [\App\Http\Controllers\Admin\ModerationController::class, 'pendingComments'])->name('moderation.comments');
+    Route::post('/moderation/comments/{comment}/approve', [\App\Http\Controllers\Admin\ModerationController::class, 'approveComment'])->name('moderation.comments.approve');
+    Route::post('/moderation/comments/{comment}/hide', [\App\Http\Controllers\Admin\ModerationController::class, 'hideComment'])->name('moderation.comments.hide');
+    Route::get('/spam-logs', [\App\Http\Controllers\Admin\ModerationController::class, 'spamLogs'])->name('spam-logs');
+});

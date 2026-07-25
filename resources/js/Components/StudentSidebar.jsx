@@ -15,6 +15,7 @@ export default function StudentSidebar({ activeItem = '' }) {
         { name: 'Notifications', icon: 'notifications', route: '#', fallback: '#', pattern: '/notifications' },
         { name: 'Learning Insights', icon: 'analytics', route: '#', fallback: '#', pattern: '/insights' },
         { name: 'Achievements', icon: 'emoji_events', route: '#', fallback: '#', pattern: '/achievements' },
+        { name: 'Grievances', icon: 'report', route: 'grievances.create', fallback: '/grievances/submit', pattern: '/grievances' },
         { name: 'Profile', icon: 'account_circle', route: 'profile.edit', fallback: '/profile', pattern: '/profile' },
         { name: 'Settings', icon: 'settings', route: '#', fallback: '#', pattern: '/settings' },
     ];
