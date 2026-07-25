@@ -67,28 +67,32 @@ export default function SuperAdminDashboard({ stats }) {
                 
                 {/* System Health & Live Insights (Column 1 & 2) */}
                 <div className="lg:col-span-2 space-y-6">
-                    {/* System Health Section */}
+                    {/* System Resources Section */}
                     <section className="bg-white glass-card rounded-xl p-6">
                         <h4 className="font-title-md text-title-md mb-4 flex items-center gap-1">
-                            <span className="material-symbols-outlined text-primary">psychology</span>
-                            Critical Learning Gaps
+                            <span className="material-symbols-outlined text-primary">memory</span>
+                            System Health & Resources
                         </h4>
                         <div className="space-y-4">
-                            <div className="p-4 bg-white rounded-lg border border-error/20 flex flex-col gap-1">
-                                <div className="flex justify-between items-center">
-                                    <span className="text-error font-label-md font-bold uppercase">Platform Difficulty</span>
-                                    <span className="text-[10px] text-on-surface-variant">Computer Science</span>
+                            <div className="p-4 bg-white rounded-lg border border-outline-variant/20 flex flex-col gap-2">
+                                <div className="flex justify-between items-center mb-1">
+                                    <span className="text-on-surface font-label-md font-bold uppercase">CPU Usage</span>
+                                    <span className="text-[10px] text-on-surface-variant font-bold">42%</span>
                                 </div>
-                                <p className="text-body-sm font-medium">Database Normalization: 45% average failure rate across 12 institutions.</p>
-                                <button className="mt-1 text-primary font-label-md self-start hover:underline">View Analytics</button>
+                                <div className="w-full bg-surface-container-highest rounded-full h-2">
+                                    <div className="bg-primary h-2 rounded-full" style={{ width: '42%' }}></div>
+                                </div>
+                                <p className="text-body-sm font-medium text-on-surface-variant mt-1">Normal load across all production clusters.</p>
                             </div>
-                            <div className="p-4 bg-white rounded-lg border border-secondary/20 flex flex-col gap-1">
-                                <div className="flex justify-between items-center">
-                                    <span className="text-secondary font-label-md font-bold uppercase">Platform Difficulty</span>
-                                    <span className="text-[10px] text-on-surface-variant">Software Engineering</span>
+                            <div className="p-4 bg-white rounded-lg border border-outline-variant/20 flex flex-col gap-2">
+                                <div className="flex justify-between items-center mb-1">
+                                    <span className="text-on-surface font-label-md font-bold uppercase">Database Storage</span>
+                                    <span className="text-[10px] text-warning font-bold">78%</span>
                                 </div>
-                                <p className="text-body-sm font-medium">Java Inheritance: High demand for remedial resources detected.</p>
-                                <button className="mt-1 text-primary font-label-md self-start hover:underline">Allocate Resources</button>
+                                <div className="w-full bg-surface-container-highest rounded-full h-2">
+                                    <div className="bg-tertiary h-2 rounded-full" style={{ width: '78%' }}></div>
+                                </div>
+                                <p className="text-body-sm font-medium text-on-surface-variant mt-1">Approaching threshold on main tenant database.</p>
                             </div>
                         </div>
                     </section>
@@ -153,28 +157,28 @@ export default function SuperAdminDashboard({ stats }) {
                 
                 {/* Activity & Insights (Column 3) */}
                 <div className="space-y-6">
-                    {/* Learning Insights Chip Card */}
-                    <section className="glass-card rounded-xl p-6 bg-gradient-to-br from-primary-container/5 to-transparent">
+                    {/* Active Alarms Chip Card */}
+                    <section className="glass-card rounded-xl p-6 bg-gradient-to-br from-error-container/30 to-transparent">
                         <h4 className="font-title-md text-title-md mb-4 flex items-center gap-1">
-                            <span className="material-symbols-outlined text-primary">psychology</span>
-                            Critical Learning Gaps
+                            <span className="material-symbols-outlined text-error">warning</span>
+                            Active System Alarms
                         </h4>
                         <div className="space-y-4">
                             <div className="p-4 bg-white rounded-lg border border-error/20 flex flex-col gap-1">
                                 <div className="flex justify-between items-center">
-                                    <span className="text-error font-label-md font-bold uppercase">Platform Difficulty</span>
-                                    <span className="text-[10px] text-on-surface-variant">Computer Science</span>
+                                    <span className="text-error font-label-md font-bold uppercase">High Latency</span>
+                                    <span className="text-[10px] text-on-surface-variant">API Gateway</span>
                                 </div>
-                                <p className="text-body-sm font-medium">Database Normalization: 45% average failure rate across 12 institutions.</p>
-                                <button className="mt-1 text-primary font-label-md self-start hover:underline">View Analytics</button>
+                                <p className="text-body-sm font-medium">Response times &gt; 500ms detected in US-East region.</p>
+                                <button className="mt-1 text-primary font-label-md self-start hover:underline">Investigate Logs</button>
                             </div>
                             <div className="p-4 bg-white rounded-lg border border-secondary/20 flex flex-col gap-1">
                                 <div className="flex justify-between items-center">
-                                    <span className="text-secondary font-label-md font-bold uppercase">Platform Difficulty</span>
-                                    <span className="text-[10px] text-on-surface-variant">Software Engineering</span>
+                                    <span className="text-secondary font-label-md font-bold uppercase">Storage Warning</span>
+                                    <span className="text-[10px] text-on-surface-variant">S3 Buckets</span>
                                 </div>
-                                <p className="text-body-sm font-medium">Java Inheritance: High demand for remedial resources detected.</p>
-                                <button className="mt-1 text-primary font-label-md self-start hover:underline">Allocate Resources</button>
+                                <p className="text-body-sm font-medium">Institution media uploads exceeding daily quota.</p>
+                                <button className="mt-1 text-primary font-label-md self-start hover:underline">Manage Quotas</button>
                             </div>
                         </div>
                     </section>
