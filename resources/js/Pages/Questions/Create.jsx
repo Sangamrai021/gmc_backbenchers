@@ -10,7 +10,7 @@ export default function Create({ subjects }) {
         title: '',
         body: '',
         category: '',
-        is_anonymous: false,
+        is_anonymous: true,
     });
 
     const handleSubmit = (e) => {
@@ -22,15 +22,12 @@ export default function Create({ subjects }) {
         <AuthenticatedLayout header="Ask a Question">
             <Head title="Ask a Question" />
 
-            <div className="max-w-3xl mx-auto pb-12 mt-4 space-y-6">
+            <div className="max-w-3xl mx-auto pb-12 mt-4 space-y-4">
                 
                 {/* Header Section */}
-                <div className="bg-gradient-to-r from-primary to-primary/80 rounded-3xl p-8 text-white shadow-lg relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-48 h-48 bg-white/10 rounded-full blur-2xl -mt-10 -mr-10 mix-blend-overlay"></div>
-                    <div className="relative z-10">
-                        <h2 className="text-3xl font-bold mb-2">Ask the Community 💡</h2>
-                        <p className="text-primary-50 text-lg font-medium">Stuck on a problem? Ask clearly and get help from peers or teachers.</p>
-                    </div>
+                <div className="bg-surface-container-lowest border border-surface-container-low rounded-2xl p-5 shadow-sm">
+                    <h2 className="text-xl font-bold text-on-surface mb-1">Start a Discussion</h2>
+                    <p className="text-on-surface-variant text-sm font-medium">Stuck on a problem? Ask clearly and get help from peers or teachers.</p>
                 </div>
 
                 <div className="bg-white/80 backdrop-blur-md rounded-3xl border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-8">
