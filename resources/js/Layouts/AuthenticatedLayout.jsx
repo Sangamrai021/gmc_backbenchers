@@ -4,7 +4,7 @@ import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import SuperAdminSidebar from '@/Components/SuperAdminSidebar';
 import StudentSidebar from '@/Components/StudentSidebar';
-import TeacherNavbar from '@/Components/TeacherNavbar';
+import TeacherSidebar from '@/Components/TeacherSidebar';
 import InstitutionAdminSidebar from '@/Components/InstitutionAdminSidebar';
 import NotificationBell from '@/Components/NotificationBell';
 import { Link, usePage } from '@inertiajs/react';
@@ -119,11 +119,32 @@ export default function AuthenticatedLayout({ header, children }) {
 
     if (user?.role === 'teacher') {
         return (
-            <div className="bg-[#f8fafc] text-slate-900 font-sans min-h-screen flex flex-col">
-                <TeacherNavbar />
-                <main className="flex-1 overflow-x-hidden">
-                    {children}
-                </main>
+            <div className="bg-gray-50 text-gray-900 font-sans flex h-screen overflow-hidden">
+                <TeacherSidebar />
+                <div className="flex-1 flex flex-col h-screen ml-[260px]">
+                    <header className="h-16 bg-white border-b border-gray-200 px-8 flex justify-between items-center z-30 sticky top-0">
+                        <div className="flex-1 max-w-lg">
+                            <div className="relative group">
+                                <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600 transition-colors text-[20px]">search</span>
+                                <input 
+                                    className="w-full bg-gray-50 border border-gray-200 hover:border-gray-300 focus:border-indigo-500 rounded-lg py-2 pl-10 pr-4 text-sm focus:ring-4 focus:ring-indigo-500/10 transition-all outline-none" 
+                                    placeholder="Search student, subject, or assignment..." 
+                                    type="text" 
+                                />
+                                <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                                    <kbd className="hidden sm:inline-block border border-gray-200 bg-white rounded px-2 text-[10px] font-semibold text-gray-400">Ctrl</kbd>
+                                    <kbd className="hidden sm:inline-block border border-gray-200 bg-white rounded px-2 text-[10px] font-semibold text-gray-400">K</kbd>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="flex items-center gap-4 pl-4">
+                            <NotificationBell />
+                        </div>
+                    </header>
+                    <main className="flex-1 overflow-y-auto bg-gray-50/50">
+                        {children}
+                    </main>
+                </div>
             </div>
         );
     }
