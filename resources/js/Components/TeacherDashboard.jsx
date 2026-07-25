@@ -64,6 +64,15 @@ export default function TeacherDashboard({ stats }) {
                     <p className="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Unanswered Questions</p>
                     <h3 className="font-headline-lg text-headline-lg text-on-surface">{stats.questions}</h3>
                 </div>
+                {/* Grievance Card */}
+                <Link href={route('admin.grievances.index')} className="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant/10 hover:shadow-lg transition-shadow hover:border-red-200">
+                    <div className="flex items-center justify-between mb-2">
+                        <span className="material-symbols-outlined text-red-500 p-2 bg-red-50 rounded-lg">report</span>
+                        <span className="text-label-md font-bold text-red-500">{stats.open_grievances}</span>
+                    </div>
+                    <p className="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Grievances</p>
+                    <h3 className="font-headline-lg text-headline-lg text-on-surface">{stats.grievances}</h3>
+                </Link>
             </section>
 
             {/* Bento Layout Content */}

@@ -58,6 +58,15 @@ export default function Dashboard({ stats }) {
                             <div className="text-3xl font-bold text-blue-600">{stats.subjects}</div>
                             <div className="text-sm text-gray-500 mt-1">Subjects</div>
                         </div>
+                        <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                            <div className="text-3xl font-bold text-red-600">{stats.grievances}</div>
+                            <div className="text-sm text-gray-500 mt-1">Grievances</div>
+                            <div className="text-xs text-gray-400 mt-1">{stats.open_grievances} open · {stats.resolved_grievances} resolved</div>
+                        </div>
+                        <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                            <div className="text-3xl font-bold text-orange-600">{stats.critical_grievances}</div>
+                            <div className="text-sm text-gray-500 mt-1">Critical</div>
+                        </div>
                     </div>
 
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">

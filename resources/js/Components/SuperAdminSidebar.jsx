@@ -150,6 +150,39 @@ export default function SuperAdminSidebar({ activeItem = '' }) {
                     <span className="font-label-md text-label-md">Support/Tickets</span>
                 </Link>
                 <Link
+                    href={safeRoute('admin.grievances.index', '/admin/grievances')}
+                    className={`flex items-center gap-4 px-4 py-2 rounded-lg font-medium transition-all ${
+                        isActive('/admin/grievances') || activeItem === 'Grievances'
+                            ? 'text-primary font-bold bg-primary-container/10 border-r-4 border-primary opacity-80'
+                            : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
+                    }`}
+                >
+                    <span className="material-symbols-outlined">report</span>
+                    <span className="font-label-md text-label-md">Grievances</span>
+                </Link>
+                <Link
+                    href={safeRoute('admin.moderation', '/admin/moderation')}
+                    className={`flex items-center gap-4 px-4 py-2 rounded-lg font-medium transition-all ${
+                        isActive('/admin/moderation') || activeItem === 'Moderation'
+                            ? 'text-primary font-bold bg-primary-container/10 border-r-4 border-primary opacity-80'
+                            : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
+                    }`}
+                >
+                    <span className="material-symbols-outlined">gavel</span>
+                    <span className="font-label-md text-label-md">Moderation</span>
+                </Link>
+                <Link
+                    href={safeRoute('admin.spam-logs', '/admin/spam-logs')}
+                    className={`flex items-center gap-4 px-4 py-2 rounded-lg font-medium transition-all ${
+                        isActive('/admin/spam-logs') || activeItem === 'Spam Logs'
+                            ? 'text-primary font-bold bg-primary-container/10 border-r-4 border-primary opacity-80'
+                            : 'text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface'
+                    }`}
+                >
+                    <span className="material-symbols-outlined">shield</span>
+                    <span className="font-label-md text-label-md">Spam Logs</span>
+                </Link>
+                <Link
                     href="#"
                     className="flex items-center gap-4 px-4 py-2 rounded-lg text-on-surface-variant font-medium hover:bg-surface-container-high hover:text-on-surface transition-all"
                 >

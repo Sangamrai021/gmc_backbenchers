@@ -1,8 +1,9 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head, Link, usePage } from '@inertiajs/react';
+import { route } from 'ziggy-js';
 
 export default function Dashboard({ stats }) {
-    const displayStats = stats || { questions: 0, answers: 0, subjects: 0 };
+    const displayStats = stats || { questions: 0, answers: 0, subjects: 0, grievances: 0, open_grievances: 0, resolved_grievances: 0, critical_grievances: 0 };
     const { auth } = usePage().props;
     const user = auth?.user || { name: 'Student' };
     const firstName = user.name.split(' ')[0];
@@ -29,16 +30,17 @@ export default function Dashboard({ stats }) {
                         <p className="font-headline-md text-headline-md text-on-surface">{displayStats.subjects}</p>
                     </div>
                 </div>
-                {/* Card 2 */}
-                <div className="bg-white p-6 rounded-xl custom-shadow flex items-center gap-4 hover:translate-y-[-4px] transition-transform duration-300">
-                    <div className="w-12 h-12 rounded-lg bg-tertiary/10 flex items-center justify-center text-tertiary">
-                        <span className="material-symbols-outlined">pending_actions</span>
+                {/* Card 2 — Grievances */}
+                <Link href={route('grievances.feed')} className="bg-white p-6 rounded-xl custom-shadow flex items-center gap-4 hover:translate-y-[-4px] transition-transform duration-300">
+                    <div className="w-12 h-12 rounded-lg bg-red-50 flex items-center justify-center text-red-500">
+                        <span className="material-symbols-outlined">report</span>
                     </div>
                     <div>
-                        <p className="text-label-sm text-on-surface-variant uppercase tracking-wider">Pending Tasks</p>
-                        <p className="font-headline-md text-headline-md text-on-surface">3</p>
+                        <p className="text-label-sm text-on-surface-variant uppercase tracking-wider">My Grievances</p>
+                        <p className="font-headline-md text-headline-md text-on-surface">{displayStats.grievances}</p>
+                        <p className="text-[10px] text-gray-400">{displayStats.open_grievances} open · {displayStats.resolved_grievances} resolved</p>
                     </div>
-                </div>
+                </Link>
                 {/* Card 3 */}
                 <div className="bg-white p-6 rounded-xl custom-shadow flex items-center gap-4 hover:translate-y-[-4px] transition-transform duration-300">
                     <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">

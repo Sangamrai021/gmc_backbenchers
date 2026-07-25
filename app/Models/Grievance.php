@@ -16,7 +16,7 @@ class Grievance extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'institution_id', 'semester_id', 'subject_id', 'reference_code',
+        'user_id', 'institution_id', 'semester_id', 'subject_id', 'reference_code',
         'category_id', 'title', 'description', 'priority', 'user_priority',
         'admin_priority', 'priority_reviewed_at', 'priority_reviewed_by',
         'status', 'assigned_to', 'is_anonymous', 'reporter_ip',
@@ -48,6 +48,11 @@ class Grievance extends Model
     public function institution(): BelongsTo
     {
         return $this->belongsTo(Institution::class);
+    }
+
+    public function submitter(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function semester(): BelongsTo

@@ -19,6 +19,8 @@ use Illuminate\Support\ServiceProvider;
 
 use App\Events\AssignmentCreated;
 use App\Events\AssignmentGraded;
+use App\Events\GrievanceStatusUpdated;
+use App\Events\GrievanceSubmitted;
 use App\Events\QuestionPosted;
 use App\Events\QuestionAnswered;
 use App\Events\AnswerAccepted;
@@ -29,6 +31,8 @@ use App\Events\TeacherAssigned;
 
 use App\Listeners\NotifyAssignmentCreated;
 use App\Listeners\NotifyAssignmentGraded;
+use App\Listeners\NotifyGrievanceStatusUpdated;
+use App\Listeners\NotifyGrievanceSubmitted;
 use App\Listeners\NotifyQuestionPosted;
 use App\Listeners\NotifyQuestionAnswered;
 use App\Listeners\NotifyAnswerAccepted;
@@ -68,6 +72,8 @@ class AppServiceProvider extends ServiceProvider
 
         Event::listen(AssignmentCreated::class, NotifyAssignmentCreated::class);
         Event::listen(AssignmentGraded::class, NotifyAssignmentGraded::class);
+        Event::listen(GrievanceSubmitted::class, NotifyGrievanceSubmitted::class);
+        Event::listen(GrievanceStatusUpdated::class, NotifyGrievanceStatusUpdated::class);
         Event::listen(QuestionPosted::class, NotifyQuestionPosted::class);
         Event::listen(QuestionAnswered::class, NotifyQuestionAnswered::class);
         Event::listen(AnswerAccepted::class, NotifyAnswerAccepted::class);

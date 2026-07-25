@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Grievance;
 use App\Models\GrievanceEvent;
 use App\Models\SpamLog;
+use App\Events\GrievanceSubmitted;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -79,6 +80,7 @@ class GrievanceService
 
         $grievance = DB::transaction(function () use ($validated, $photoPath, $videoPath, $request, $spamResult, $userPriority) {
             $grievance = Grievance::create([
+                'user_id' => auth()->id(),
                 'institution_id' => $validated['institution_id'],
                 'semester_id' => $validated['semester_id'] ?? null,
                 'subject_id' => $validated['subject_id'] ?? null,
@@ -145,6 +147,8 @@ class GrievanceService
 
             return $grievance;
         });
+
+        GrievanceSubmitted::dispatch($grievance);
 
         $bestDuplicate = !empty($duplicates) ? $duplicates[0] : null;
         if ($bestDuplicate && $bestDuplicate['similarity'] > 0.5) {

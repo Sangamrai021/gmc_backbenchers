@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
             DemoDataSeeder::class,
             StudentProjectSeeder::class,
             MentorSessionSeeder::class,
+            GrievanceDemoDataSeeder::class,
         ]);
        
     }

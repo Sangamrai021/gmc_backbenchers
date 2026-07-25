@@ -1,4 +1,5 @@
 import { Link, usePage } from '@inertiajs/react';
+import { route } from 'ziggy-js';
 
 export default function InstitutionAdminDashboard({ stats }) {
     const user = usePage().props.auth.user;
@@ -70,6 +71,15 @@ export default function InstitutionAdminDashboard({ stats }) {
                     <p className="font-label-md text-on-surface-variant uppercase text-[10px]">Questions Today</p>
                     <h3 className="font-headline-lg text-headline-lg-mobile text-on-surface">{stats?.questions || 54}</h3>
                 </div>
+                {/* Grievance Card */}
+                <Link href={route('admin.grievances.index')} className="bg-surface-container-lowest p-4 rounded-xl border border-outline-variant hover:shadow-md transition-shadow hover:border-red-200">
+                    <div className="flex justify-between items-start mb-2">
+                        <span className="material-symbols-outlined text-red-500 p-2 bg-red-50 rounded-lg">report</span>
+                        <span className="text-red-500 font-bold text-xs">{stats?.open_grievances || 0}</span>
+                    </div>
+                    <p className="font-label-md text-on-surface-variant uppercase text-[10px]">Open Grievances</p>
+                    <h3 className="font-headline-lg text-headline-lg-mobile text-on-surface">{stats?.grievances || 0}</h3>
+                </Link>
             </div>
 
             <div className="grid grid-cols-12 gap-6">

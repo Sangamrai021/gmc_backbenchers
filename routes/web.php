@@ -76,6 +76,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
         $stats['questions'] = \App\Models\Discussion::where('discussionable_type', 'subject')
             ->whereIn('discussionable_id', $subjectIds)->where('user_id', $user->id)->count();
         $stats['answers'] = \App\Models\DiscussionAnswer::where('user_id', $user->id)->count();
+        $stats['grievances'] = \App\Models\Grievance::where('user_id', $user->id)->visible()->count();
+        $stats['open_grievances'] = \App\Models\Grievance::where('user_id', $user->id)->visible()->where('status', '!=', 'resolved')->count();
+        $stats['resolved_grievances'] = \App\Models\Grievance::where('user_id', $user->id)->visible()->where('status', 'resolved')->count();
+        $stats['critical_grievances'] = \App\Models\Grievance::where('user_id', $user->id)->visible()->where('priority', 'critical')->count();
 
         return Inertia::render('Student/Dashboard', ['stats' => $stats]);
     })->name('student.dashboard');

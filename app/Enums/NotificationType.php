@@ -27,6 +27,14 @@ enum NotificationType: string
     case StudentEnrolled = 'enrollment.joined';
     case TeacherAssigned = 'teacher.assigned';
 
+    // Grievance
+    case GrievanceSubmitted = 'grievance.submitted';
+    case GrievanceStatusUpdated = 'grievance.status_updated';
+    case GrievanceAssigned = 'grievance.assigned';
+    case GrievanceUpvoted = 'grievance.upvoted';
+    case GrievanceCommentAdded = 'grievance.comment_added';
+    case GrievanceMilestoneReached = 'grievance.milestone_reached';
+
     /**
      * Human-readable label for the notification type.
      */
@@ -46,6 +54,12 @@ enum NotificationType: string
             self::AnnouncementPublished => 'New Announcement',
             self::StudentEnrolled => 'Student Enrolled',
             self::TeacherAssigned => 'Teacher Assigned',
+            self::GrievanceSubmitted => 'New Grievance',
+            self::GrievanceStatusUpdated => 'Grievance Updated',
+            self::GrievanceAssigned => 'Grievance Assigned',
+            self::GrievanceUpvoted => 'Grievance Upvoted',
+            self::GrievanceCommentAdded => 'New Comment',
+            self::GrievanceMilestoneReached => 'Milestone Reached',
         };
     }
 
@@ -60,6 +74,7 @@ enum NotificationType: string
             self::ResourceUploaded, self::ResourceUpdated => 'resources',
             self::AnnouncementPublished => 'announcements',
             self::StudentEnrolled, self::TeacherAssigned => 'institution',
+            self::GrievanceSubmitted, self::GrievanceStatusUpdated, self::GrievanceAssigned, self::GrievanceUpvoted, self::GrievanceCommentAdded, self::GrievanceMilestoneReached => 'grievances',
         };
     }
 }

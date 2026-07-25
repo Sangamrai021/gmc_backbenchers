@@ -128,12 +128,12 @@ A siloed feature is useless. The grievance system must feel native to EduVoice.
 ### How
 
 | Step | Task | Details | Status |
-|------|------|--------|--------|
-| 4.1 | Auth integration | Map Spatie roles to grievance permissions | [ ] |
-| 4.2 | Navigation integration | Add "Grievances" to sidebar | [ ] |
-| 4.3 | Dashboard stats | Add grievance cards to role dashboards | [ ] |
-| 4.4 | Notification integration | Add NotificationType::Grievance* | [ ] |
-| 4.5 | Broadcast events | GrievanceCreated, GrievanceResolved events | [ ] |
+|------|------|---------|--------|
+| 4.1 | Auth integration | Map Spatie roles to grievance permissions | [x] |
+| 4.2 | Navigation integration | Add "Grievances" to sidebar | [x] |
+| 4.3 | Dashboard stats | Add grievance cards to role dashboards | [x] |
+| 4.4 | Notification integration | Add NotificationType::Grievance* | [x] |
+| 4.5 | Broadcast events | GrievanceSubmitted, GrievanceStatusUpdated events | [x] |
 
 ---
 
