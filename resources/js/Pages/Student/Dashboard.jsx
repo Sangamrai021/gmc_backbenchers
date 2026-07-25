@@ -16,7 +16,7 @@ export default function Dashboard({ stats }) {
                 <section className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mt-4">
                     <div>
                         <h3 className="text-4xl font-extrabold text-on-surface tracking-tight">
-                            Welcome back, <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60">{firstName}</span> 👋
+                            Welcome back, <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60">{firstName}</span>
                         </h3>
                         <p className="text-lg text-on-surface-variant mt-2 font-medium">Ready to conquer your classes today?</p>
                     </div>
@@ -84,12 +84,12 @@ export default function Dashboard({ stats }) {
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* Left Column: Assignments & Activity */}
                     <div className="lg:col-span-2 space-y-6">
-                        
+
                         {/* Ask Without Fear Hero Card */}
                         <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-primary/80 p-8 shadow-xl shadow-primary/20">
                             <div className="absolute top-0 right-0 -mt-8 -mr-8 w-64 h-64 bg-white/10 rounded-full blur-3xl mix-blend-overlay"></div>
                             <div className="absolute bottom-0 left-0 -mb-8 -ml-8 w-48 h-48 bg-white/10 rounded-full blur-2xl mix-blend-overlay"></div>
-                            
+
                             <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
                                 <div className="flex-1 text-white">
                                     <h4 className="text-3xl font-bold mb-3">Ask Without Fear 💡</h4>
@@ -155,7 +155,7 @@ export default function Dashboard({ stats }) {
                         {/* Learning Insights */}
                         <div className="bg-white/80 backdrop-blur-md rounded-3xl border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-8">
                             <h4 className="text-xl font-bold text-on-surface mb-6">Learning Insights</h4>
-                            
+
                             <div className="space-y-6">
                                 <div>
                                     <p className="text-xs font-bold text-outline uppercase tracking-widest mb-3">Strong Topics</p>
@@ -186,7 +186,7 @@ export default function Dashboard({ stats }) {
                         <div className="bg-white/80 backdrop-blur-md rounded-3xl border border-white shadow-[0_8px_30px_rgb(0,0,0,0.04)] p-8">
                             <h4 className="text-xl font-bold text-on-surface mb-6">Recent Activity</h4>
                             <div className="space-y-6 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-surface-container before:to-transparent">
-                                
+
                                 <div className="relative flex items-start gap-4">
                                     <div className="relative z-10 w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary shrink-0 ring-4 ring-white">
                                         <span className="material-symbols-outlined text-[18px]" style={{ fontVariationSettings: '"FILL" 1' }}>done_all</span>
