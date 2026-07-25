@@ -12,7 +12,7 @@ class SetAnonymousUuid
     {
         if (!$request->cookie('_auid')) {
             $uuid = (string) Str::uuid();
-            cookie()->queue(cookie('_auid', $uuid, 525600, '/', null, true, false, false, 'lax'));
+            cookie()->queue(cookie('_auid', $uuid, 525600, '/', null, $request->secure(), false, false, 'lax'));
         }
 
         return $next($request);
