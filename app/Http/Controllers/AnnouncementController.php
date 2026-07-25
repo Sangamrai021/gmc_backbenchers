@@ -6,6 +6,7 @@ use App\Http\Requests\StoreAnnouncementRequest;
 use App\Http\Requests\UpdateAnnouncementRequest;
 use App\Models\Announcement;
 use App\Models\Subject;
+use App\Events\AnnouncementPublished;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -50,7 +51,9 @@ class AnnouncementController extends Controller
         $data = $request->validated();
         $data['user_id'] = $user->id;
 
-        Announcement::create($data);
+        $announcement = Announcement::create($data);
+
+        event(new AnnouncementPublished($announcement));
 
         return redirect()->route('announcements.index')
             ->with('success', 'Announcement created successfully.');

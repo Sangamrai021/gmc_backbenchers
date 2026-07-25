@@ -6,6 +6,7 @@ use App\Http\Requests\StoreResourceRequest;
 use App\Http\Requests\UpdateResourceRequest;
 use App\Models\Resource;
 use App\Models\Subject;
+use App\Events\ResourceUploaded;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -55,7 +56,9 @@ class ResourceController extends Controller
             $data['file_url'] = '/storage/' . $path;
         }
 
-        Resource::create($data);
+        $resource = Resource::create($data);
+
+        event(new ResourceUploaded($resource));
 
         return redirect()->route('resources.index')
             ->with('success', 'Resource created successfully.');

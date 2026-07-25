@@ -6,6 +6,7 @@ use App\Http\Requests\StoreSubjectRequest;
 use App\Http\Requests\UpdateSubjectRequest;
 use App\Models\Subject;
 use App\Models\User;
+use App\Events\TeacherAssigned;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -118,6 +119,8 @@ class SubjectController extends Controller
         $subject->teachers()->syncWithoutDetaching([
             $teacher->id => ['section_id' => $validated['section_id'] ?? null],
         ]);
+
+        event(new TeacherAssigned($subject, $teacher));
 
         return redirect()->route('admin.subjects.index')
             ->with('success', 'Teacher assigned to subject.');

@@ -1,0 +1,16 @@
+<?php
+
+namespace App\Events;
+
+use App\Models\DiscussionAnswer;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
+
+class AnswerAccepted
+{
+    use Dispatchable, SerializesModels;
+
+    public function __construct(
+        public DiscussionAnswer $answer,
+    ) {}
+}

@@ -6,6 +6,7 @@ use App\Http\Requests\StoreAssignmentRequest;
 use App\Http\Requests\UpdateAssignmentRequest;
 use App\Models\Assignment;
 use App\Models\Subject;
+use App\Events\AssignmentCreated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -81,6 +82,8 @@ class AssignmentController extends Controller
             'due_date' => $request->due_date,
             'allow_late_submission' => $request->boolean('allow_late_submission'),
         ]);
+
+        event(new AssignmentCreated($assignment));
 
         return redirect()->route('assignments.show', $assignment)
             ->with('success', 'Assignment created successfully.');

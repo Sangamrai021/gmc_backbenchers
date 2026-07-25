@@ -6,6 +6,7 @@ import SuperAdminSidebar from '@/Components/SuperAdminSidebar';
 import StudentSidebar from '@/Components/StudentSidebar';
 import TeacherSidebar from '@/Components/TeacherSidebar';
 import InstitutionAdminSidebar from '@/Components/InstitutionAdminSidebar';
+import NotificationBell from '@/Components/NotificationBell';
 import { Link, usePage } from '@inertiajs/react';
 
 import { useState } from 'react';
@@ -30,10 +31,7 @@ export default function AuthenticatedLayout({ header, children }) {
                             </div>
                         </div>
                         <div className="flex items-center gap-4">
-                            <button className="p-2 rounded-full hover:bg-surface-container-low transition-colors relative">
-                                <span className="material-symbols-outlined text-on-surface-variant">notifications</span>
-                                <span className="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
-                            </button>
+                            <NotificationBell />
                             <button className="p-2 rounded-full hover:bg-surface-container-low transition-colors">
                                 <span className="material-symbols-outlined text-on-surface-variant">help</span>
                             </button>
@@ -88,9 +86,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                 <input className="w-full pl-10 pr-4 py-2 bg-white border border-outline-variant rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent text-body-md" placeholder="Search courses, notes..." type="text" />
                             </div>
                             <div className="flex items-center gap-4">
-                                <button className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors text-on-surface-variant">
-                                    <span className="material-symbols-outlined">notifications</span>
-                                </button>
+                                <NotificationBell />
                                 <div className="flex items-center gap-3 pl-4 border-l border-outline-variant">
                                     <Dropdown>
                                         <Dropdown.Trigger>
@@ -134,10 +130,7 @@ export default function AuthenticatedLayout({ header, children }) {
                             </div>
                         </div>
                         <div className="flex items-center gap-4">
-                            <button className="p-2 rounded-full hover:bg-surface-container-low transition-colors relative">
-                                <span className="material-symbols-outlined text-on-surface-variant">notifications</span>
-                                <span className="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-surface-container-lowest"></span>
-                            </button>
+                            <NotificationBell />
                             <button className="p-2 rounded-full hover:bg-surface-container-low transition-colors">
                                 <span className="material-symbols-outlined text-on-surface-variant">help</span>
                             </button>
@@ -187,9 +180,7 @@ export default function AuthenticatedLayout({ header, children }) {
                         </div>
                         <div className="flex items-center gap-6">
                             <div className="flex items-center gap-4">
-                                <button className="w-10 h-10 rounded-full hover:bg-surface-container-low flex items-center justify-center transition-colors">
-                                    <span className="material-symbols-outlined">notifications</span>
-                                </button>
+                                <NotificationBell />
                                 <button className="w-10 h-10 rounded-full hover:bg-surface-container-low flex items-center justify-center transition-colors">
                                     <span className="material-symbols-outlined">help_outline</span>
                                 </button>

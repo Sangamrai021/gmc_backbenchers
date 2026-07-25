@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSubmissionRequest;
 use App\Models\Assignment;
 use App\Models\Submission;
+use App\Events\AssignmentGraded;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -89,6 +90,8 @@ class SubmissionController extends Controller
         if (!$updated) {
             return back()->with('error', 'Failed to update submission.');
         }
+
+        event(new AssignmentGraded($submission));
 
         return redirect()->route('assignments.show', $submission->assignment)
             ->with('success', 'Submission graded.');

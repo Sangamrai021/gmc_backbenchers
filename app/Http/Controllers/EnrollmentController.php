@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Semester;
 use App\Models\User;
+use App\Events\StudentEnrolled;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -41,6 +42,8 @@ class EnrollmentController extends Controller
             'status' => 'active',
             'joined_at' => now(),
         ]);
+
+        event(new StudentEnrolled($semester, $user));
 
         return redirect()->route('dashboard')
             ->with('success', 'Successfully enrolled in ' . $semester->name);

@@ -6,6 +6,8 @@ use App\Http\Requests\StoreAnswerRequest;
 use App\Models\Discussion;
 use App\Models\DiscussionAnswer;
 use App\Models\StudentActivityLog;
+use App\Events\QuestionAnswered;
+use App\Events\AnswerAccepted;
 use Illuminate\Support\Facades\Auth;
 
 class DiscussionAnswerController extends Controller
@@ -31,6 +33,8 @@ class DiscussionAnswerController extends Controller
         if ($discussion->status === 'open') {
             $discussion->update(['status' => 'answered']);
         }
+
+        event(new QuestionAnswered($answer));
 
         return redirect()->route('questions.show', $discussion)
             ->with('success', 'Answer posted.');
@@ -71,6 +75,10 @@ class DiscussionAnswerController extends Controller
         }
 
         $answer->update(['is_accepted' => !$answer->is_accepted]);
+
+        if ($answer->is_accepted) {
+            event(new AnswerAccepted($answer));
+        }
 
         return redirect()->route('questions.show', $discussion)
             ->with('success', 'Answer status updated.');

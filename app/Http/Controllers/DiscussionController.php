@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateDiscussionRequest;
 use App\Models\Discussion;
 use App\Models\Subject;
 use App\Models\StudentActivityLog;
+use App\Events\QuestionPosted;
 use App\Services\AnonymousNameGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -130,6 +131,8 @@ class DiscussionController extends Controller
             'loggable_id' => $discussion->id,
             'loggable_type' => Discussion::class,
         ]);
+
+        event(new QuestionPosted($discussion));
 
         return redirect()->route('questions.show', $discussion)
             ->with('success', 'Your question has been posted.');
