@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('assignment_id')->constrained()->restrictOnDelete();
             $table->foreignId('student_id')->constrained('users')->restrictOnDelete();
+            $table->integer('attempt_number')->default(1);
             $table->text('content')->nullable();
             $table->string('file_url')->nullable();
             $table->timestamp('submitted_at')->useCurrent();
@@ -19,9 +20,10 @@ return new class extends Migration
             $table->text('feedback')->nullable();
             $table->boolean('is_late')->default(false);
             $table->string('status')->default('submitted');
+            $table->boolean('is_struggling')->default(false);
             $table->timestamps();
 
-            $table->unique(['assignment_id', 'student_id']);
+            $table->unique(['assignment_id', 'student_id', 'attempt_number'], 'sub_assign_student_attempt_unique');
         });
     }
 

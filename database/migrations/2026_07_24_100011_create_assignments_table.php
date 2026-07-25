@@ -11,11 +11,16 @@ return new class extends Migration
         Schema::create('assignments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('subject_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('section_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('teacher_id')->constrained('users')->cascadeOnDelete();
+            $table->string('status')->default('draft');
+            $table->timestamp('start_date')->nullable();
             $table->string('title');
             $table->text('description')->nullable();
-            $table->string('attachment')->nullable();
+            $table->string('attachment')->nullable(); // Legacy, keeping for backwards compatibility
+            $table->json('attachments')->nullable();
             $table->integer('max_score')->nullable();
+            $table->integer('passing_score')->nullable();
             $table->timestamp('due_date')->nullable();
             $table->boolean('allow_late_submission')->default(false);
             $table->timestamps();
