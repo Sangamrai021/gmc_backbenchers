@@ -5,14 +5,18 @@ import SuperAdminDashboard from '@/Components/SuperAdminDashboard';
 import InstitutionAdminDashboard from '@/Components/InstitutionAdminDashboard';
 
 
-export default function Dashboard({ stats }) {
+export default function Dashboard({ stats, recentSubmissions, recentQuestions }) {
     const user = usePage().props.auth.user;
 
     if (user?.role === 'teacher') {
         return (
             <AuthenticatedLayout>
                 <Head title="Dashboard - Teacher" />
-                <TeacherDashboard stats={stats} />
+                <TeacherDashboard 
+                    stats={stats} 
+                    recentSubmissions={recentSubmissions} 
+                    recentQuestions={recentQuestions} 
+                />
             </AuthenticatedLayout>
         );
     }

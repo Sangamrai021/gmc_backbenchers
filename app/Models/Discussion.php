@@ -19,6 +19,7 @@ class Discussion extends Model
         'category',
         'is_anonymous',
         'status',
+        'tracking_token',
     ];
 
     protected function casts(): array
