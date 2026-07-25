@@ -29,7 +29,38 @@ class SuperAdminPageController extends Controller
     public function roles(Request $request)
     {
         abort_if(!$request->user()->isSuperAdmin(), 403);
-        return Inertia::render('Admin/Roles/Index');
+        
+        $query = \App\Models\User::query();
+        
+        if ($request->has('search') && $request->search) {
+            $query->where(function($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%')
+                  ->orWhere('email', 'like', '%' . $request->search . '%');
+            });
+        }
+        
+        $users = $query->select('id', 'name', 'email', 'role', 'created_at')
+            ->orderBy('created_at', 'desc')
+            ->paginate(15)
+            ->withQueryString();
+
+        return Inertia::render('Admin/Roles/Index', [
+            'users' => $users,
+            'filters' => $request->only('search')
+        ]);
+    }
+
+    public function updateRole(Request $request, \App\Models\User $user)
+    {
+        abort_if(!$request->user()->isSuperAdmin(), 403);
+        
+        $request->validate([
+            'role' => 'required|in:super_admin,institution_admin,teacher,student,user'
+        ]);
+
+        $user->update(['role' => $request->role]);
+
+        return back()->with('success', 'User role updated successfully.');
     }
 
     public function reports(Request $request)

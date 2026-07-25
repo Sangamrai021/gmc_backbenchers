@@ -6,12 +6,12 @@ export default function SuperAdminLayout({ header, children, activeItem = '' }) 
     const user = usePage().props.auth.user;
 
     return (
-        <div className="min-h-screen bg-surface flex font-sans text-on-surface">
+        <div className="min-h-screen bg-surface font-sans text-on-surface pl-64 flex flex-col">
             {/* Super Admin Sidebar */}
             <SuperAdminSidebar activeItem={activeItem} />
 
             {/* Main Content Area */}
-            <div className="flex-1 flex flex-col min-w-0 ml-64">
+            <div className="flex-1 flex flex-col min-w-0 w-full">
                 {/* Top Navigation Bar */}
                 <header className="h-16 bg-surface-container-lowest border-b border-outline-variant/10 px-4 sm:px-6 flex items-center justify-between shadow-sm sticky top-0 z-20">
                     <div className="flex items-center gap-3">
